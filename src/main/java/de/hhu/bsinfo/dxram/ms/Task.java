@@ -16,6 +16,8 @@
 
 package de.hhu.bsinfo.dxram.ms;
 
+import java.io.IOException;
+
 /**
  * Base class for all tasks to be implemented. This holds optional data the task
  * needs for execution as well as the code getting executed for the task.
@@ -31,7 +33,7 @@ public interface Task extends TaskScriptNode {
      *         Context for this task containing DXRAM access and task parameters.
      * @return Return code of your task. 0 on success, everything else indicates an error.
      */
-    int execute(final TaskContext p_ctx);
+    int execute(final TaskContext p_ctx) throws IOException;
 
     /**
      * Handle a signal from the master
