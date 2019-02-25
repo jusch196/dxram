@@ -53,18 +53,6 @@ public class MergeTask implements Task {
                     long[] firstChunkAdresses = getLongArray(nameService.getChunkID("AC" + ownIndex, 1000), sizeone);
                     long[] secondChunkAdresses = getLongArray(nameService.getChunkID("AC" + test, 1000), sizetwo);
 
-                    int[] chunkValuesone = new int[firstChunkAdresses.length];
-                    for (int i=0;i<firstChunkAdresses.length; i++){
-                        chunkValuesone[i] = getIntData(firstChunkAdresses[i]);
-                    }
-                    System.out.println(Arrays.toString(chunkValuesone));
-
-                    int[] chunkValuestwo = new int[secondChunkAdresses.length];
-                    for (int i=0;i<secondChunkAdresses.length; i++){
-                        chunkValuestwo[i] = getIntData(secondChunkAdresses[i]);
-                    }
-                    System.out.println(Arrays.toString(chunkValuestwo));
-
                     long[] finalArray = new long[sizeone+sizetwo];
                     int indexLeft = 0;
                     int indexRight = 0;
@@ -114,19 +102,9 @@ public class MergeTask implements Task {
 
                     // Update goThrough
                     editChunkInt(goThrough*2, nameService.getChunkID("GT", 1000), chunkService);
-
-
-                    System.out.println("Mergeliste " + ownIndex/2 + " erstellt!");
-
-                    int[] chunkValues = new int[finalArray.length];
-                    for (int i=0;i<finalArray.length; i++){
-                        chunkValues[i] = getIntData(finalArray[i]);
-                    }
-                    System.out.println("Finales Array" + Arrays.toString(chunkValues));
                 }
             }
         } else {
-            System.out.println("Nichts zu tun!");
             return 0;
         }
 

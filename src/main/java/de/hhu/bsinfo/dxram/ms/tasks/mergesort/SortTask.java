@@ -12,7 +12,6 @@ import de.hhu.bsinfo.dxutils.serialization.Importer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.LongBuffer;
-import java.util.Arrays;
 
 public class SortTask implements Task {
 
@@ -102,12 +101,6 @@ public class SortTask implements Task {
             }
             partialListLength = tmp;
         }
-
-        int[] chunkValues = new int[chunkAdress.length];
-        for (int i=0;i<chunkAdress.length; i++){
-            chunkValues[i] = getIntData(chunkAdress[i]);
-        }
-        System.out.println(Arrays.toString(chunkValues));
 
         // Update Addresses
         editChunkArray(chunkAdress, nameService.getChunkID("AC" + ownIndex, 1000), chunkService);

@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.LongBuffer;
-import java.util.Arrays;
 
 
 public class ExportTask implements Task {
@@ -48,22 +47,16 @@ public class ExportTask implements Task {
             String filename = "dxapp/data/sortedData.csv";
             BufferedWriter outputWriter = new BufferedWriter(new FileWriter(filename));
 
-            for (int i=0; i<chunkAddress.length;i++) {
-                outputWriter.write(getIntData(chunkAddress[i]) + ", ");
+            for (long chunkAddress1 : chunkAddress) {
+                outputWriter.write(getIntData(chunkAddress1) + ", ");
             }
             outputWriter.flush();
             outputWriter.close();
 
-            int[] chunkValues = new int[chunkAddress.length];
-            for (int i=0;i<chunkAddress.length; i++){
-                chunkValues[i] = getIntData(chunkAddress[i]);
-            }
-            System.out.println(Arrays.toString(chunkValues));
-
             System.out.println("Beende Schreibvorgang");
 
         } else {
-            System.out.println("Nichts zu tun an Schreibvorgang");
+            System.out.println("Kein Schreibvorgang erfolgt!");
         }
 
         return 0;
