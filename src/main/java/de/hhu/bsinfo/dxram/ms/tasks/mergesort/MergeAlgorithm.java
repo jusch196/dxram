@@ -2,11 +2,29 @@ package de.hhu.bsinfo.dxram.ms.tasks.mergesort;
 
 import de.hhu.bsinfo.dxmem.data.ChunkByteArray;
 import de.hhu.bsinfo.dxram.chunk.ChunkService;
-
 import java.nio.ByteBuffer;
+
+/**
+ *
+ * @author Julian Schacht, julian-morten.schacht@uni-duesseldorf.de, 15.03.2019
+ */
 
 class MergeAlgorithm extends Thread {
 
+    /**
+     * Merges the addresses of two partial lists
+     * stored next to each other comparing their values
+     * based on John von Neumann mergesortalgorithm
+     *
+     * @param start
+     *          Startindex of the partial list
+     * @param end
+     *          Endindex of the partial list
+     * @param breakpoint
+     *          Breakpointindex to separate the two half's
+     * @param chunkService
+     *          Chunkservice to manage the operations
+     */
     MergeAlgorithm(long[] array, int start, int end, int breakpoint, ChunkService chunkService){
 
         long[] finalArray = new long[end-start+1];
@@ -42,6 +60,15 @@ class MergeAlgorithm extends Thread {
         System.arraycopy(finalArray, 0, array, start, finalIndex);
     }
 
+    /**
+     * Get the integervalue of a chunk
+     * @param chunkId
+     *          ID of the chunk
+     * @param chunkService
+     *          Chunkservice to manage the operation
+     * @return
+     *      Integervalue of the chunk
+     */
     private static int getIntData(long chunkId, int size, ChunkService chunkService){
         ChunkByteArray chunk = new ChunkByteArray(chunkId, size);
         chunkService.get().get(chunk);

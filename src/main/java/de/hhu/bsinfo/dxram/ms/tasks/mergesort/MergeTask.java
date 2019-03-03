@@ -12,7 +12,6 @@ import de.hhu.bsinfo.dxutils.serialization.Importer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.LongBuffer;
-import java.util.Arrays;
 
 public class MergeTask implements Task {
 
@@ -92,7 +91,7 @@ public class MergeTask implements Task {
                     // Update Addresses
                     long[] tmpAddressChunkId = new long[1];
                     chunkService.create().create(p_ctx.getCtxData().getOwnNodeId(), tmpAddressChunkId, 1, GLOBAL_CHUNK_SIZE*finalArray.length);
-                    editChunkArray(finalArray, tmpAddressChunkId[0], chunkService);
+                    editChunkLongArray(finalArray, tmpAddressChunkId[0], chunkService);
                     nameService.register(tmpAddressChunkId[0], "AC" + ownIndex/2);
 
                     // Update Size
@@ -116,7 +115,7 @@ public class MergeTask implements Task {
 
     @Override
     public void handleSignal(Signal p_signal) {
-
+        // Doesn't handle signals
     }
 
     @Override
@@ -134,6 +133,16 @@ public class MergeTask implements Task {
         return 0;
     }
 
+    /**
+     * Gets a long array stored in a chunk
+     *
+     * @param chunkId
+     *          ID of the chunk
+     * @param size
+     *          Size of the array
+     * @return
+     *          Returns a long[]-array containing the values of the chunk
+     */
     private long[] getLongArray(long chunkId, int size) {
         ChunkByteArray testChunk = new ChunkByteArray(chunkId, GLOBAL_CHUNK_SIZE*size);
         chunkService.get().get(testChunk);
@@ -149,6 +158,13 @@ public class MergeTask implements Task {
 
     }
 
+    /**
+     * Get the integervalue of a chunk
+     * @param chunkId
+     *          ID of the chunk
+     * @return
+     *      Integervalue of the chunk
+     */
     private int getIntData(long chunkId ){
         ChunkByteArray chunk = new ChunkByteArray(chunkId, GLOBAL_CHUNK_SIZE);
         chunkService.get().get(chunk);
@@ -156,7 +172,17 @@ public class MergeTask implements Task {
         return ByteBuffer.wrap(byteData).getInt();
     }
 
-    private void editChunkArray (long[] array, long chunkId, ChunkService chunkService){
+    /**
+     * Edits the longarray of a chunk
+     *
+     * @param array
+     *          longarray to put
+     * @param chunkId
+     *          ChunkID of the editable chunk
+     * @param chunkService
+     *          Chunkservice to manage the operation
+     */
+    private void editChunkLongArray(long[] array, long chunkId, ChunkService chunkService){
         ByteBuffer byteBuffer = ByteBuffer.allocate(array.length*GLOBAL_CHUNK_SIZE);
         LongBuffer longBuffer = byteBuffer.asLongBuffer();
         longBuffer.put(array);
@@ -164,6 +190,16 @@ public class MergeTask implements Task {
         chunkService.put().put(chunkByteArray);
     }
 
+    /**
+     * Edits the integervalue of a chunk
+     *
+     * @param value
+     *          Integervalue to put
+     * @param chunkId
+     *          ChunkID of the editable chunk
+     * @param chunkService
+     *          Chunkservice to manage the operation
+     */
     private void editChunkInt(int value, long chunkId , ChunkService chunkService){
         ByteBuffer byteBuffer = ByteBuffer.allocate(GLOBAL_CHUNK_SIZE);
         byteBuffer.putInt(value);

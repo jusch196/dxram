@@ -18,9 +18,9 @@ public class SortTask implements Task {
     private static ChunkService chunkService;
     private final static int GLOBAL_CHUNK_SIZE = 64;
 
-    private static boolean powtwo = true;
+    private static boolean powTwo = true;
     private static int partialListLength[];
-    private static long[] chunkAdress;
+    private static long[] chunkAddress;
     private static Thread[] threads;
 
     public SortTask() {
@@ -28,8 +28,6 @@ public class SortTask implements Task {
 
     @Override
     public int execute(TaskContext p_ctx) {
-
-        System.out.println("Starte Sort-Task");
 
         chunkService = p_ctx.getDXRAMServiceAccessor().getService(ChunkService.class);
         NameserviceService nameService = p_ctx.getDXRAMServiceAccessor().getService(NameserviceService.class);
@@ -39,45 +37,42 @@ public class SortTask implements Task {
 
         // Get SortTaskBeginChunk
         int size = getIntData(nameService.getChunkID("SAC" + ownIndex, 1000));
-        chunkAdress = getLongArray(nameService.getChunkID("AC" + ownIndex, 1000), size);
-
+        chunkAddress = getLongArray(nameService.getChunkID("AC" + ownIndex, 1000), size);
 
         int availableResources = Runtime.getRuntime().availableProcessors();
 
         threads = new Thread[availableResources];
         partialListLength = new int[availableResources];
-        int lengthOfSplits = chunkAdress.length/availableResources;
-        int overhead = chunkAdress.length % availableResources;
+        int lengthOfSplits = chunkAddress.length/availableResources;
+        int overhead = chunkAddress.length % availableResources;
 
-        // Run normal mergesort
+        // Run John von Neunmann mergesort on each partial list
         for (int i = 0, j = 0; i < availableResources; i++) {
             if (j < overhead) {
-                threads[i] = new SortAlgorithm(chunkAdress, i * lengthOfSplits + j, lengthOfSplits + 1, chunkService);
+                threads[i] = new SortAlgorithm(chunkAddress, i * lengthOfSplits + j, lengthOfSplits + 1, chunkService);
                 partialListLength[i] = lengthOfSplits + 1;
                 j++;
             } else {
-                threads[i] = new SortAlgorithm(chunkAdress, (i * lengthOfSplits) + overhead, lengthOfSplits, chunkService);
+                threads[i] = new SortAlgorithm(chunkAddress, (i * lengthOfSplits) + overhead, lengthOfSplits, chunkService);
                 partialListLength[i] = lengthOfSplits;
             }
         }
 
         while (availableResources > 1){
-            double splitcheck = (double) availableResources/2;
-            if (splitcheck %1 != 0){
-                powtwo = false;
+            double splitCheck = (double) availableResources/2;
+            if (splitCheck %1 != 0){
+                powTwo = false;
             }
-
             availableResources /= 2;
             threads = new Thread[availableResources];
 
-            //  i represents one block (left AND right half)
             for (int i = 0; i < availableResources; i++) {
                 merge(i);
             }
 
             // Update listlength
             int[] tmp;
-            if (!powtwo){
+            if (!powTwo){
                 tmp = new int[availableResources+1];
 
                 for (int i = 0; i < tmp.length-1; i++) {
@@ -87,7 +82,7 @@ public class SortTask implements Task {
                     }
                 }
                 tmp[tmp.length-1] = partialListLength[partialListLength.length-1];
-                powtwo = true;
+                powTwo = true;
                 availableResources++;
 
             } else{
@@ -102,15 +97,15 @@ public class SortTask implements Task {
             partialListLength = tmp;
         }
 
-        // Update Addresses
-        editChunkArray(chunkAdress, nameService.getChunkID("AC" + ownIndex, 1000), chunkService);
+        // Update Chunkaddresses
+        editChunkLongArray(chunkAddress, nameService.getChunkID("AC" + ownIndex, 1000), chunkService);
 
         return 0;
     }
 
     @Override
     public void handleSignal(Signal p_signal) {
-
+        // Doesn't handle signals
     }
 
     @Override
@@ -128,8 +123,17 @@ public class SortTask implements Task {
         return 0;
     }
 
-
-    private void editChunkArray (long[] array, long chunkId, ChunkService chunkService){
+    /**
+     * Edits the longarray of a chunk
+     *
+     * @param array
+     *          longarray to put
+     * @param chunkId
+     *          ChunkID of the editable chunk
+     * @param chunkService
+     *          Chunkservice to manage the operation
+     */
+    private void editChunkLongArray(long[] array, long chunkId, ChunkService chunkService){
         ByteBuffer byteBuffer = ByteBuffer.allocate(array.length*GLOBAL_CHUNK_SIZE);
         LongBuffer longBuffer = byteBuffer.asLongBuffer();
         longBuffer.put(array);
@@ -137,6 +141,15 @@ public class SortTask implements Task {
         chunkService.put().put(chunkByteArray);
     }
 
+    /**
+     * Returns a longarray stored in DXRAM
+     * @param chunkId
+     *          ID of the chunk where the array is stored
+     * @param size
+     *          Size of the array
+     * @return
+     *      Returns the stored array
+     */
     private long[] getLongArray(long chunkId, int size) {
         ChunkByteArray testChunk = new ChunkByteArray(chunkId, GLOBAL_CHUNK_SIZE*size);
         chunkService.get().get(testChunk);
@@ -152,6 +165,13 @@ public class SortTask implements Task {
 
     }
 
+    /**
+     * Get the integervalue of a chunk
+     * @param chunkId
+     *          ID of the chunk
+     * @return
+     *      Integervalue of the chunk
+     */
     private int getIntData(long chunkId ){
         ChunkByteArray chunk = new ChunkByteArray(chunkId, GLOBAL_CHUNK_SIZE);
         chunkService.get().get(chunk);
@@ -159,6 +179,11 @@ public class SortTask implements Task {
         return ByteBuffer.wrap(byteData).getInt();
     }
 
+    /**
+     * Merges two half's of a block which indices are stored in listlength*
+     * @param blockIndex
+     *          Index of the block to sort
+     */
     private static void merge(int blockIndex ){
 
         int start=0, breakpoint, end;
@@ -169,8 +194,6 @@ public class SortTask implements Task {
         breakpoint = start + partialListLength[2*blockIndex];
         end = breakpoint + partialListLength[2*blockIndex+1] -1;
 
-        //System.out.println(Arrays.toString(partialListLength));
-        threads[blockIndex] = new MergeAlgorithm(chunkAdress,start,end,breakpoint, chunkService);
-
+        threads[blockIndex] = new MergeAlgorithm(chunkAddress,start,end,breakpoint, chunkService);
     }
 }

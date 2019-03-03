@@ -2,8 +2,13 @@ package de.hhu.bsinfo.dxram.ms.tasks.mergesort;
 
 import de.hhu.bsinfo.dxmem.data.ChunkByteArray;
 import de.hhu.bsinfo.dxram.chunk.ChunkService;
-
 import java.nio.ByteBuffer;
+
+/**
+ * Sorts the array based on John von Neumann mergesort
+ *
+ * @author Julian Schacht, julian-morten.schacht@uni-duesseldorf.de, 15.03.2019
+ */
 
 class SortAlgorithm extends Thread {
 
@@ -14,7 +19,6 @@ class SortAlgorithm extends Thread {
 
         SortAlgorithm(long[] array, int start, int length, ChunkService chunkService){
 
-                //this.array = array;
                 SortAlgorithm.array = array;
                 SortAlgorithm.chunkService = chunkService;
                 try {
@@ -26,6 +30,17 @@ class SortAlgorithm extends Thread {
 
         }
 
+        /**
+         * Merges two halfs stored next to each other in array
+         * based on John von Neumann mergesort
+         *
+         * @param start
+         *              Startindex of the partial list
+         * @param length
+         *              Length of the two half's
+         * @param breakpoint
+         *              First index of the right half two separate both halfs
+         */
         private static void merge(int start, int length, int breakpoint) {
 
                 long[] finalArray = new long[length];
@@ -61,18 +76,32 @@ class SortAlgorithm extends Thread {
                 System.arraycopy(finalArray, 0, array, start, finalIndex);
         }
 
-        private static void sort(int start, int length){
-
-                if ( length > 1) {
-
-                        sort(start, (length/2));
-                        sort(start+(length/2), (length-(length/2)));
-
-                        merge(start, length, length/2);
+        /**
+         * Sorts a partial list stored in the array
+         * based on John von Neumann mergesort
+         *
+         * @param start
+         *              Startindex of the partial list
+         * @param endIndex
+         *              Endindex of the partial list
+         */
+        private static void sort(int start, int endIndex){
+                if ( endIndex > 1) {
+                        sort(start, (endIndex/2));
+                        sort(start+(endIndex/2), (endIndex-(endIndex/2)));
+                        merge(start, endIndex, endIndex/2);
                 }
-
         }
 
+        /**
+         * Get the integervalue of a chunk
+         * @param chunkId
+         *          ID of the chunk
+         * @param chunkService
+         *          Chunkservice to manage the operation
+         * @return
+         *      Integervalue of the chunk
+         */
         private static int getIntData(long chunkId, ChunkService chunkService){
                 ChunkByteArray chunk = new ChunkByteArray(chunkId, GLOBAL_CHUNK_SIZE);
                 chunkService.get().get(chunk);

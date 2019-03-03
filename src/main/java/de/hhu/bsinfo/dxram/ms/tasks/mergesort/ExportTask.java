@@ -16,7 +16,11 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.LongBuffer;
 
-
+/**
+ * Task to export the sorted data (sortedData.csv)
+ *
+ * @author Julian Schacht, julian-morten.schacht@uni-duesseldorf.de, 15.03.2019
+ */
 public class ExportTask implements Task {
     private final static int GLOBAL_CHUNK_SIZE = 64;
     private static ChunkService chunkService;
@@ -25,8 +29,6 @@ public class ExportTask implements Task {
     public ExportTask(){
     }
 
-
-
     @Override
     public int execute(TaskContext p_ctx) throws IOException {
 
@@ -34,13 +36,11 @@ public class ExportTask implements Task {
         NameserviceService nameService = p_ctx.getDXRAMServiceAccessor().getService(NameserviceService.class);
         chunkService = p_ctx.getDXRAMServiceAccessor().getService(ChunkService.class);
 
+        // Get ID
         short ownSlaveID = p_ctx.getCtxData().getSlaveId();
         int ownIndex = Short.toUnsignedInt(ownSlaveID);
 
-        System.out.println("Starte Export-Task");
-
         if( ownIndex == 0){
-
             int size = getIntData(nameService.getChunkID("SAC0", 1000));
             long[] chunkAddress = getLongArray(nameService.getChunkID("AC0", 1000), size);
 
@@ -52,19 +52,13 @@ public class ExportTask implements Task {
             }
             outputWriter.flush();
             outputWriter.close();
-
-            System.out.println("Beende Schreibvorgang");
-
-        } else {
-            System.out.println("Kein Schreibvorgang erfolgt!");
         }
-
         return 0;
     }
 
     @Override
     public void handleSignal(Signal p_signal) {
-
+        // Doesn't handle signals
     }
 
     @Override
@@ -82,6 +76,16 @@ public class ExportTask implements Task {
         return 0;
     }
 
+    /**
+     * Gets a long array stored in a chunk
+     *
+     * @param chunkId
+     *          ID of the chunk
+     * @param size
+     *          Size of the array
+     * @return
+     *          Returns a long[]-array containing the values of the chunk
+     */
     private long[] getLongArray(long chunkId, int size) {
         ChunkByteArray testChunk = new ChunkByteArray(chunkId, GLOBAL_CHUNK_SIZE*size);
         chunkService.get().get(testChunk);
@@ -97,6 +101,13 @@ public class ExportTask implements Task {
 
     }
 
+    /**
+     * Get the integervalue of a chunk
+     * @param chunkId
+     *          ID of the chunk
+     * @return
+     *      Integervalue of the chunk
+     */
     private int getIntData(long chunkId ){
         ChunkByteArray chunk = new ChunkByteArray(chunkId, GLOBAL_CHUNK_SIZE);
         chunkService.get().get(chunk);
