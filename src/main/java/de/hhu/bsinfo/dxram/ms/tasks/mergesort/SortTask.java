@@ -28,6 +28,7 @@ public class SortTask implements Task {
 
     @Override
     public int execute(TaskContext p_ctx) {
+        System.out.println("Start sort task");
 
         chunkService = p_ctx.getDXRAMServiceAccessor().getService(ChunkService.class);
         NameserviceService nameService = p_ctx.getDXRAMServiceAccessor().getService(NameserviceService.class);

@@ -40,18 +40,49 @@ public class ExportTask implements Task {
         short ownSlaveID = p_ctx.getCtxData().getSlaveId();
         int ownIndex = Short.toUnsignedInt(ownSlaveID);
 
+        int outputSplit = getIntData(nameService.getChunkID("WO", 1000));
+
         if( ownIndex == 0){
             int size = getIntData(nameService.getChunkID("SAC0", 1000));
             long[] chunkAddress = getLongArray(nameService.getChunkID("AC0", 1000), size);
 
-            String filename = "dxapp/data/sortedData.csv";
-            BufferedWriter outputWriter = new BufferedWriter(new FileWriter(filename));
+            int dataSize = chunkAddress.length;
 
-            for (long chunkAddress1 : chunkAddress) {
-                outputWriter.write(getIntData(chunkAddress1) + ", ");
+            if (outputSplit != 1){
+
+                int writeOutIndex;
+                for (int i=0; i<outputSplit-1;i++){
+                    String filename = "dxapp/data/sortedData"+i+".csv";
+                    BufferedWriter outputWriter = new BufferedWriter(new FileWriter(filename));
+                    writeOutIndex = i*dataSize/outputSplit;
+
+                    for (int j=0; j<dataSize/outputSplit; j++){
+                     outputWriter.write(getIntData(chunkAddress[writeOutIndex+j]) + ", ");
+                    }
+                    outputWriter.flush();
+                    outputWriter.close();
+                }
+
+                int name = outputSplit-1;
+                String filename = "dxapp/data/sortedData"+name+".csv";
+                BufferedWriter outputWriter = new BufferedWriter(new FileWriter(filename));
+
+                writeOutIndex = (outputSplit-1)*dataSize/outputSplit;
+                for (int i=writeOutIndex; i<dataSize;i++){
+                    outputWriter.write(getIntData(chunkAddress[i]) + ", ");
+                }
+                outputWriter.flush();
+                outputWriter.close();
+        } else {
+                String filename = "dxapp/data/sortedData.csv";
+                BufferedWriter outputWriter = new BufferedWriter(new FileWriter(filename));
+
+                for (long chunkAddress1 : chunkAddress) {
+                    outputWriter.write(getIntData(chunkAddress1) + ", ");
+                }
+                outputWriter.flush();
+                outputWriter.close();
             }
-            outputWriter.flush();
-            outputWriter.close();
         }
         return 0;
     }

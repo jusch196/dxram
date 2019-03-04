@@ -32,83 +32,67 @@ public class MergeTask implements Task {
         int ownIndex = Short.toUnsignedInt(ownSlaveID);
         int goThrough = getIntData(nameService.getChunkID("GT" + ownIndex, 1000));
 
-        int numberOfWorkingNodes = p_ctx.getCtxData().getSlaveNodeIds().length;
+        if (ownIndex % goThrough == 1){
 
-        System.out.println("Starte merge-Task");
+            int partnerIndex = ownIndex - 1;
 
-        if (ownIndex % goThrough == 0){
+            int sizeone = getIntData(nameService.getChunkID("SAC" + partnerIndex, 1000));
+            int sizetwo = getIntData(nameService.getChunkID("SAC" + ownIndex, 1000));
 
-            int checkIfLastUneven = (2*numberOfWorkingNodes)/goThrough % 2;
+            long[] firstChunkAdresses = getLongArray(nameService.getChunkID("AC" + partnerIndex, 1000), sizeone);
+            long[] secondChunkAdresses = getLongArray(nameService.getChunkID("AC" + ownIndex, 1000), sizetwo);
 
-            if (checkIfLastUneven != 1 || ownIndex != checkIfLastUneven-1){
+            long[] finalArray = new long[sizeone+sizetwo];
+            int indexLeft = 0;
+            int indexRight = 0;
+            int finalIndex = 0;
 
-                if (numberOfWorkingNodes % 2 == 0) {
-
-                    int test = ownIndex +1;
-
-                    int sizeone = getIntData(nameService.getChunkID("SAC" + ownIndex, 1000));
-                    int sizetwo = getIntData(nameService.getChunkID("SAC" + test, 1000));
-
-                    long[] firstChunkAdresses = getLongArray(nameService.getChunkID("AC" + ownIndex, 1000), sizeone);
-                    long[] secondChunkAdresses = getLongArray(nameService.getChunkID("AC" + test, 1000), sizetwo);
-
-                    long[] finalArray = new long[sizeone+sizetwo];
-                    int indexLeft = 0;
-                    int indexRight = 0;
-                    int finalIndex = 0;
-
-                    while (indexLeft < sizeone && indexRight < sizetwo) {
-
-                        if (getIntData(firstChunkAdresses[indexLeft]) < getIntData(secondChunkAdresses[indexRight])) {
-                            finalArray[finalIndex] = firstChunkAdresses[indexLeft];
-                            indexLeft++;
-                        } else {
-                            finalArray[finalIndex] = secondChunkAdresses[indexRight];
-                            indexRight++;
-                        }
-                        finalIndex++;
-                    }
-
-                    while (indexLeft < sizeone) {
-                        finalArray[finalIndex] = firstChunkAdresses[indexLeft];
-                        indexLeft++;
-                        finalIndex++;
-                    }
-
-                    while (indexRight < sizetwo) {
-                        finalArray[finalIndex] = secondChunkAdresses[indexRight];
-                        indexRight++;
-                        finalIndex++;
-                    }
-
-                    // Remove old Adresschunks
-                    chunkService.remove().remove(nameService.getChunkID("AC" + ownIndex, 1000));
-                    chunkService.remove().remove(nameService.getChunkID("AC" + ownIndex+1, 1000));
-                    chunkService.remove().remove(nameService.getChunkID("SAC" + ownIndex, 1000));
-                    chunkService.remove().remove(nameService.getChunkID("SAC" + ownIndex+1, 1000));
-
-
-                    // Update Addresses
-                    long[] tmpAddressChunkId = new long[1];
-                    chunkService.create().create(p_ctx.getCtxData().getOwnNodeId(), tmpAddressChunkId, 1, GLOBAL_CHUNK_SIZE*finalArray.length);
-                    editChunkLongArray(finalArray, tmpAddressChunkId[0], chunkService);
-                    nameService.register(tmpAddressChunkId[0], "AC" + ownIndex/2);
-
-                    // Update Size
-                    chunkService.create().create(p_ctx.getCtxData().getOwnNodeId(), tmpAddressChunkId, 1, GLOBAL_CHUNK_SIZE);
-                    editChunkInt(finalArray.length, tmpAddressChunkId[0], chunkService);
-                    nameService.register(tmpAddressChunkId[0], "SAC" + ownIndex/2);
-
-                    // Update goThrough
-                    editChunkInt(goThrough*2, nameService.getChunkID("GT", 1000), chunkService);
+            while (indexLeft < sizeone && indexRight < sizetwo) {
+                if (getIntData(firstChunkAdresses[indexLeft]) < getIntData(secondChunkAdresses[indexRight])) {
+                    finalArray[finalIndex] = firstChunkAdresses[indexLeft];
+                    indexLeft++;
+                } else {
+                    finalArray[finalIndex] = secondChunkAdresses[indexRight];
+                    indexRight++;
                 }
+                finalIndex++;
             }
-        } else {
+
+            while (indexLeft < sizeone) {
+                finalArray[finalIndex] = firstChunkAdresses[indexLeft];
+                indexLeft++;
+                finalIndex++;
+            }
+
+            while (indexRight < sizetwo) {
+                finalArray[finalIndex] = secondChunkAdresses[indexRight];
+                indexRight++;
+                finalIndex++;
+            }
+            System.out.println("BEENDET");
+            // Remove old Adresschunks
+            chunkService.remove().remove(nameService.getChunkID("AC" + partnerIndex, 1000));
+            chunkService.remove().remove(nameService.getChunkID("AC" + ownIndex, 1000));
+            chunkService.remove().remove(nameService.getChunkID("SAC" + partnerIndex, 1000));
+            chunkService.remove().remove(nameService.getChunkID("SAC" + ownIndex, 1000));
+
+
+            // Update Addresses
+            long[] tmpAddressChunkId = new long[1];
+            chunkService.create().create(p_ctx.getCtxData().getOwnNodeId(), tmpAddressChunkId, 1, GLOBAL_CHUNK_SIZE*finalArray.length);
+            editChunkLongArray(finalArray, tmpAddressChunkId[0], chunkService);
+            nameService.register(tmpAddressChunkId[0], "AC" + partnerIndex/2);
+
+            // Update Size
+            chunkService.create().create(p_ctx.getCtxData().getOwnNodeId(), tmpAddressChunkId, 1, GLOBAL_CHUNK_SIZE);
+            editChunkInt(finalArray.length, tmpAddressChunkId[0], chunkService);
+            nameService.register(tmpAddressChunkId[0], "SAC" + partnerIndex/2);
+
+            // Update goThrough
+            editChunkInt(goThrough*2, nameService.getChunkID("GT" +partnerIndex, 1000), chunkService);
+            System.out.println("BEENDET");
+        } else
             return 0;
-        }
-
-
-
 
         return 0;
     }
