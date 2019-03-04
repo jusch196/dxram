@@ -1,4 +1,4 @@
-package de.hhu.bsinfo.dxram.ms.tasks.mergesort;
+package de.hhu.bsinfo.dxram.ms.tasks.mergesortapplication;
 
 import de.hhu.bsinfo.dxmem.data.ChunkByteArray;
 import de.hhu.bsinfo.dxram.chunk.ChunkService;
@@ -12,14 +12,14 @@ import de.hhu.bsinfo.dxutils.serialization.Importer;
 import java.nio.ByteBuffer;
 
 /**
- * Task to get available ressources
+ * Task to get available ressources and connect ther SlaveID with their NodeID
  *
  * @author Julian Schacht, julian-morten.schacht@uni-duesseldorf.de
  */
-public class RessourceTask implements Task{
+public class ResourceTask implements Task{
 
 
-        public RessourceTask() {
+        public ResourceTask() {
         }
 
         @Override
@@ -31,15 +31,24 @@ public class RessourceTask implements Task{
 
                 // Get ID
                 short ownSlaveID = p_ctx.getCtxData().getSlaveId();
-                long[] ressourceChunk = new long[1];
+                short ownNodeID = p_ctx.getCtxData().getOwnNodeId();
+                long[] resourceChunk = new long[1];
 
-                chunkService.create().create(p_ctx.getCtxData().getOwnNodeId(), ressourceChunk, 1, 64);
+                // register resources
+                chunkService.create().create(p_ctx.getCtxData().getOwnNodeId(), resourceChunk, 1, 64);
                 ByteBuffer byteBuffer = ByteBuffer.allocate(64);
                 byteBuffer.putInt(Runtime.getRuntime().availableProcessors());
-                ChunkByteArray chunkByteArray = new ChunkByteArray(ressourceChunk[0], byteBuffer.array());
+                ChunkByteArray chunkByteArray = new ChunkByteArray(resourceChunk[0], byteBuffer.array());
                 chunkService.put().put(chunkByteArray);
+                nameService.register(resourceChunk[0], "RC" + ownSlaveID);
 
-                nameService.register(ressourceChunk[0], "RC-" + Short.toUnsignedInt(ownSlaveID));
+                // connect SlaveID with NodeID
+                chunkService.create().create(p_ctx.getCtxData().getOwnNodeId(), resourceChunk, 1, 64);
+                byteBuffer = ByteBuffer.allocate(64);
+                byteBuffer.putShort( ownNodeID);
+                chunkByteArray = new ChunkByteArray(resourceChunk[0], byteBuffer.array());
+                chunkService.put().put(chunkByteArray);
+                nameService.register(resourceChunk[0], "SID" + ownSlaveID);
                 return 0;
         }
 

@@ -1,4 +1,4 @@
-package de.hhu.bsinfo.dxram.ms.tasks.mergesort;
+package de.hhu.bsinfo.dxram.ms.tasks.mergesortapplication;
 
 import de.hhu.bsinfo.dxmem.data.ChunkByteArray;
 import de.hhu.bsinfo.dxram.chunk.ChunkService;
