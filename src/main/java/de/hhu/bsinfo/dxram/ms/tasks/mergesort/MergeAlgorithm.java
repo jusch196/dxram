@@ -5,10 +5,10 @@ import de.hhu.bsinfo.dxram.chunk.ChunkService;
 import java.nio.ByteBuffer;
 
 /**
+ * Merges the adresseslists of the data local on one thread
  *
  * @author Julian Schacht, julian-morten.schacht@uni-duesseldorf.de, 15.03.2019
  */
-
 class MergeAlgorithm extends Thread {
 
     /**

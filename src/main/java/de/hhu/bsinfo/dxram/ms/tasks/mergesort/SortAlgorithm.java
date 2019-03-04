@@ -5,11 +5,10 @@ import de.hhu.bsinfo.dxram.chunk.ChunkService;
 import java.nio.ByteBuffer;
 
 /**
- * Sorts the array based on John von Neumann mergesort
+ * Sorts the array local on one thread based on John von Neumann mergesort
  *
  * @author Julian Schacht, julian-morten.schacht@uni-duesseldorf.de, 15.03.2019
  */
-
 class SortAlgorithm extends Thread {
 
         private final static int GLOBAL_CHUNK_SIZE = 64;

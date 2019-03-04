@@ -13,6 +13,11 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.LongBuffer;
 
+/**
+ * Task to merge the presorted data (sortedData.csv)
+ *
+ * @author Julian Schacht, julian-morten.schacht@uni-duesseldorf.de, 15.03.2019
+ */
 public class MergeTask implements Task {
 
     private final static int GLOBAL_CHUNK_SIZE = 64;

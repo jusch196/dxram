@@ -13,6 +13,11 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.LongBuffer;
 
+/**
+ * Task to Sort data localy (sortedData.csv)
+ *
+ * @author Julian Schacht, julian-morten.schacht@uni-duesseldorf.de, 15.03.2019
+ */
 public class SortTask implements Task {
 
     private static ChunkService chunkService;
