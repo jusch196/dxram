@@ -78,13 +78,6 @@ public class MergeTask implements Task {
                 indexRight++;
                 finalIndex++;
             }
-            // Remove old Adresschunks
-            chunkService.remove().remove(nameService.getChunkID("AC" + partnerIndex, 100));
-            chunkService.remove().remove(nameService.getChunkID("AC" + ownIndex, 100));
-            chunkService.remove().remove(nameService.getChunkID("SAC" + partnerIndex, 100));
-            chunkService.remove().remove(nameService.getChunkID("SAC" + ownIndex, 100));
-
-
             // Update Addresses
             long[] tmpAddressChunkId = new long[1];
             chunkService.create().create(p_ctx.getCtxData().getOwnNodeId(), tmpAddressChunkId, 1, GLOBAL_CHUNK_SIZE*finalArray.length);

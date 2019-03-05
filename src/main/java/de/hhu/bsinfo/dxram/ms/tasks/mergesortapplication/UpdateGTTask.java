@@ -45,8 +45,6 @@ public class UpdateGTTask implements Task {
 
         if (ownSlaveID == p_ctx.getCtxData().getSlaveNodeIds().length -1) {
             if (ownIndex % 2 == 1) {
-                chunkService.remove().remove(nameService.getChunkID("AC" + ownIndex/2, 100));
-                chunkService.remove().remove(nameService.getChunkID("SAC" + ownIndex/2, 100));
                 nameService.register(nameService.getChunkID("AC" + ownIndex, 100), "AC" + ownIndex / 2);
                 nameService.register(nameService.getChunkID("SAC" + ownIndex, 100), "SAC" + ownIndex / 2);
             } else

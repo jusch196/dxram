@@ -25,6 +25,8 @@ public class CleanUpTask implements Task {
 
             for (int i=0; i<numberOfWorkerNodes; i++){
                 chunkService.remove().remove(nameserviceService.getChunkID("SID"+i, 100));
+                chunkService.remove().remove(nameserviceService.getChunkID("SAC"+i, 100));
+                chunkService.remove().remove(nameserviceService.getChunkID("AC"+i, 100));
                 chunkService.remove().remove(nameserviceService.getChunkID("RC"+i, 100));
             }
         }
