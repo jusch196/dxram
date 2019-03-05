@@ -31,6 +31,7 @@ public class ExportTask implements Task {
 
     @Override
     public int execute(TaskContext p_ctx) throws IOException {
+        System.out.println("Starte Export");
 
         // Get Services
         NameserviceService nameService = p_ctx.getDXRAMServiceAccessor().getService(NameserviceService.class);

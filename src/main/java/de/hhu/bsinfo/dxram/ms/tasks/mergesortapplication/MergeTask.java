@@ -28,6 +28,7 @@ public class MergeTask implements Task {
 
     @Override
     public int execute(TaskContext p_ctx) {
+        System.out.println("Starte Merge");
 
         // Get Services
         NameserviceService nameService = p_ctx.getDXRAMServiceAccessor().getService(NameserviceService.class);

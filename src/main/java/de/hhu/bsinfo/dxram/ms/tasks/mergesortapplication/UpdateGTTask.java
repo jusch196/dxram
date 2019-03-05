@@ -30,6 +30,7 @@ public class UpdateGTTask implements Task {
 
     @Override
     public int execute(TaskContext p_ctx) throws IOException {
+        System.out.println("Starte Update");
         NameserviceService nameService = p_ctx.getDXRAMServiceAccessor().getService(NameserviceService.class);
         chunkService = p_ctx.getDXRAMServiceAccessor().getService(ChunkService.class);
 
