@@ -38,9 +38,6 @@ public class MergeTask implements Task {
         int ownIndex = Short.toUnsignedInt(ownSlaveID);
         int goThrough = getIntData(nameService.getChunkID("GT", 1000));
 
-        System.out.println("HIER IST SLAVE " + ownSlaveID);
-        System.out.println("MIT GT " + goThrough);
-
         if (ownIndex % goThrough == 1){
 
             int partnerIndex = ownIndex - 1;
@@ -100,9 +97,6 @@ public class MergeTask implements Task {
         }
 
         if (ownSlaveID == p_ctx.getCtxData().getSlaveNodeIds().length -1 && ownIndex % 2 == 1) {
-            System.out.println("LÄNGE: " + p_ctx.getCtxData().getSlaveNodeIds().length);
-            System.out.println("GT: " + goThrough);
-            System.out.println("ownIndex: " + ownIndex);
             editChunkInt(goThrough * 2, nameService.getChunkID("GT", 1000), chunkService);
 
         }

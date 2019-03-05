@@ -12,6 +12,13 @@ import de.hhu.bsinfo.dxutils.serialization.Importer;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 
+/**
+ * Task to merge the presorted data (sortedData.csv) in case of uneven number
+ * of workernodes
+ *
+ * @author Julian Schacht, julian-morten.schacht@uni-duesseldorf.de, 15.03.2019
+ */
+
 public class UnevenMergeTask implements Task {
 
     private final static int GLOBAL_CHUNK_SIZE = 64;
@@ -30,15 +37,10 @@ public class UnevenMergeTask implements Task {
         int ownIndex = Short.toUnsignedInt(ownSlaveID);
         int goThrough = getIntData(nameService.getChunkID("GT", 1000));
 
-        if (ownSlaveID == p_ctx.getCtxData().getSlaveNodeIds().length -1){
-            System.out.println("LÄNGE: " + p_ctx.getCtxData().getSlaveNodeIds().length);
-            System.out.println("GT: " + goThrough);
-            System.out.println("ownIndex: " + ownIndex);
-
-            if (ownIndex %2 == 0){
+        if (ownSlaveID == p_ctx.getCtxData().getSlaveNodeIds().length -1 && ownIndex %2 == 0){
                 nameService.register(nameService.getChunkID("AC" +ownIndex, 100), "AC" + ownIndex/2);
                 nameService.register(nameService.getChunkID("SAC" +ownIndex, 100), "SAC" + ownIndex/2);
-            }
+
         }
         return 0;
     }
