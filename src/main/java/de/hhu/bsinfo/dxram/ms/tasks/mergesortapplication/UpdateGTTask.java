@@ -31,6 +31,7 @@ public class UpdateGTTask implements Task {
     @Override
     public int execute(TaskContext p_ctx) throws IOException {
         System.out.println("Starte Update");
+
         NameserviceService nameService = p_ctx.getDXRAMServiceAccessor().getService(NameserviceService.class);
         chunkService = p_ctx.getDXRAMServiceAccessor().getService(ChunkService.class);
 
@@ -38,8 +39,12 @@ public class UpdateGTTask implements Task {
         int ownIndex = Short.toUnsignedInt(ownSlaveID);
         int goThrough = getIntData(nameService.getChunkID("GT", 1000));
 
-        if (ownSlaveID == p_ctx.getCtxData().getSlaveNodeIds().length -1 && ownIndex %2 == 0) {
-            if (ownIndex % 2 == 0) {
+        System.out.println("ownindex: " + ownIndex);
+        System.out.println("gothrough: " + goThrough);
+
+
+        if (ownSlaveID == p_ctx.getCtxData().getSlaveNodeIds().length -1) {
+            if (ownIndex % 2 == 1) {
                 nameService.register(nameService.getChunkID("AC" + ownIndex, 100), "AC" + ownIndex / 2);
                 nameService.register(nameService.getChunkID("SAC" + ownIndex, 100), "SAC" + ownIndex / 2);
             } else
