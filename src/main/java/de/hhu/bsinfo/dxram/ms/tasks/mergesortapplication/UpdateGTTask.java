@@ -39,11 +39,13 @@ public class UpdateGTTask implements Task {
         int ownIndex = Short.toUnsignedInt(ownSlaveID);
         int goThrough = getIntData(nameService.getChunkID("GT", 100));
 
-        System.out.println("ownindex: " + ownIndex);
-        System.out.println("gothrough: " + goThrough);
-        System.out.println("slaveIDS: " + p_ctx.getCtxData().getSlaveNodeIds().length);
 
         if (ownSlaveID == p_ctx.getCtxData().getSlaveNodeIds().length -1) {
+
+            System.out.println("ownindex: " + ownIndex);
+            System.out.println("gothrough: " + goThrough);
+            System.out.println("slaveIDS: " + p_ctx.getCtxData().getSlaveNodeIds().length);
+
             if (ownIndex % 2 == 1) {
                 nameService.register(nameService.getChunkID("AC" + ownIndex, 100), "AC" + ownIndex / 2);
                 nameService.register(nameService.getChunkID("SAC" + ownIndex, 100), "SAC" + ownIndex / 2);
