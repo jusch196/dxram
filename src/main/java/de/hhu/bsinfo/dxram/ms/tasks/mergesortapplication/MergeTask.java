@@ -28,8 +28,6 @@ public class MergeTask implements Task {
 
     @Override
     public int execute(TaskContext p_ctx) {
-        System.out.println("Starte Merge");
-
         // Get Services
         NameserviceService nameService = p_ctx.getDXRAMServiceAccessor().getService(NameserviceService.class);
         chunkService = p_ctx.getDXRAMServiceAccessor().getService(ChunkService.class);
@@ -39,10 +37,6 @@ public class MergeTask implements Task {
         int goThrough = getIntData(nameService.getChunkID("GT", 100));
 
         if (ownIndex % goThrough == 1){
-
-            System.out.println("ownindex " + ownIndex);
-            System.out.println("gothrough " + goThrough);
-
             int partnerIndex = ownIndex - 1;
 
             int sizeone = getIntData(nameService.getChunkID("SAC" + partnerIndex, 100));

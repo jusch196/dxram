@@ -33,7 +33,6 @@ public class SortTask implements Task {
 
     @Override
     public int execute(TaskContext p_ctx) {
-        System.out.println("Starte Sort");
 
         chunkService = p_ctx.getDXRAMServiceAccessor().getService(ChunkService.class);
         NameserviceService nameService = p_ctx.getDXRAMServiceAccessor().getService(NameserviceService.class);
@@ -46,16 +45,11 @@ public class SortTask implements Task {
         chunkAddress = getLongArray(nameService.getChunkID("AC" + ownIndex, 1000), size);
 
         int availableResources = Runtime.getRuntime().availableProcessors();
-        System.out.println("ressources: " + availableResources);
-        System.out.println("size: " + size);
 
         threads = new Thread[availableResources];
         partialListLength = new int[availableResources];
         int lengthOfSplits = chunkAddress.length/availableResources;
         int overhead = chunkAddress.length % lengthOfSplits;
-
-        System.out.println("length of splits: " + lengthOfSplits);
-        System.out.println("overhead: " + overhead);
 
         // Run John von Neumann mergesort on each partial list
         for (int i = 0, j = 0; i < availableResources; i++) {

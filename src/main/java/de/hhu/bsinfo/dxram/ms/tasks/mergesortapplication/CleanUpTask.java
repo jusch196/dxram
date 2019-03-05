@@ -13,11 +13,12 @@ import java.io.IOException;
 public class CleanUpTask implements Task {
     @Override
     public int execute(TaskContext p_ctx) throws IOException {
-        System.out.println("Starte Cleanup");
 
         if (p_ctx.getCtxData().getSlaveId() == 0){
+
             ChunkService chunkService = p_ctx.getDXRAMServiceAccessor().getService(ChunkService.class);
             NameserviceService nameserviceService = p_ctx.getDXRAMServiceAccessor().getService(NameserviceService.class);
+
             int numberOfWorkerNodes = p_ctx.getCtxData().getSlaveNodeIds().length;
 
             chunkService.remove().remove(nameserviceService.getChunkID("GT", 100));
