@@ -73,7 +73,8 @@ public class ExportTask implements Task {
                 }
                 outputWriter.flush();
                 outputWriter.close();
-        } else {
+        }
+            else if (outputSplit == 1){
                 String filename = "dxapp/data/sortedData.csv";
                 BufferedWriter outputWriter = new BufferedWriter(new FileWriter(filename));
 
