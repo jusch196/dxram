@@ -49,7 +49,7 @@ public class ExportTask implements Task {
 
             int dataSize = chunkAddress.length;
 
-            if (outputSplit != 1){
+            if (outputSplit > 1){
 
                 int writeOutIndex;
                 for (int i=0; i<outputSplit-1;i++){
