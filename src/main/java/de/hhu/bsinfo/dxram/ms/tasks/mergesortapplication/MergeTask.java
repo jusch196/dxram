@@ -80,12 +80,12 @@ public class MergeTask implements Task {
             }
             // Update Addresses
             long[] tmpAddressChunkId = new long[1];
-            chunkService.create().create(p_ctx.getCtxData().getOwnNodeId(), tmpAddressChunkId, 1, GLOBAL_CHUNK_SIZE*finalArray.length);
+            chunkService.create().create(getShortData(nameService.getChunkID("SID" + partnerIndex/2, 100),chunkService), tmpAddressChunkId, 1, GLOBAL_CHUNK_SIZE*finalArray.length);
             editChunkLongArray(finalArray, tmpAddressChunkId[0], chunkService);
             nameService.register(tmpAddressChunkId[0], "AC" + partnerIndex/2);
 
             // Update Size
-            chunkService.create().create(p_ctx.getCtxData().getOwnNodeId(), tmpAddressChunkId, 1, GLOBAL_CHUNK_SIZE);
+            chunkService.create().create(getShortData(nameService.getChunkID("SID" + partnerIndex/2, 100),chunkService), tmpAddressChunkId, 1, GLOBAL_CHUNK_SIZE);
             editChunkInt(finalArray.length, tmpAddressChunkId[0], chunkService);
             nameService.register(tmpAddressChunkId[0], "SAC" + partnerIndex/2);
         }
@@ -185,5 +185,21 @@ public class MergeTask implements Task {
         byteBuffer.putInt(value);
         ChunkByteArray chunkByteArray = new ChunkByteArray(chunkId, byteBuffer.array());
         chunkService.put().put(chunkByteArray);
+    }
+
+    /**
+     * Get the shortvalue of a chunk
+     * @param chunkId
+     *          ID of the chunk
+     * @param chunkService
+     *          Chunkservice to manage the operation
+     * @return
+     *      Shortvalue of the chunk
+     */
+    private short getShortData(long chunkId, ChunkService chunkService){
+        ChunkByteArray chunk = new ChunkByteArray(chunkId, GLOBAL_CHUNK_SIZE);
+        chunkService.get().get(chunk);
+        byte[] byteData = chunk.getData();
+        return ByteBuffer.wrap(byteData).getShort();
     }
 }
