@@ -36,7 +36,7 @@ public class MergeTask implements Task {
 
         short ownSlaveID = p_ctx.getCtxData().getSlaveId();
         int ownIndex = Short.toUnsignedInt(ownSlaveID);
-        int goThrough = getIntData(nameService.getChunkID("GT", 1000));
+        int goThrough = getIntData(nameService.getChunkID("GT", 100));
 
         if (ownIndex % goThrough == 1){
 
@@ -45,11 +45,11 @@ public class MergeTask implements Task {
 
             int partnerIndex = ownIndex - 1;
 
-            int sizeone = getIntData(nameService.getChunkID("SAC" + partnerIndex, 1000));
-            int sizetwo = getIntData(nameService.getChunkID("SAC" + ownIndex, 1000));
+            int sizeone = getIntData(nameService.getChunkID("SAC" + partnerIndex, 100));
+            int sizetwo = getIntData(nameService.getChunkID("SAC" + ownIndex, 100));
 
-            long[] firstChunkAdresses = getLongArray(nameService.getChunkID("AC" + partnerIndex, 1000), sizeone);
-            long[] secondChunkAdresses = getLongArray(nameService.getChunkID("AC" + ownIndex, 1000), sizetwo);
+            long[] firstChunkAdresses = getLongArray(nameService.getChunkID("AC" + partnerIndex, 100), sizeone);
+            long[] secondChunkAdresses = getLongArray(nameService.getChunkID("AC" + ownIndex, 100), sizetwo);
 
             long[] finalArray = new long[sizeone+sizetwo];
             int indexLeft = 0;
