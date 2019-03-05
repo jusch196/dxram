@@ -12,7 +12,6 @@ import de.hhu.bsinfo.dxutils.serialization.Importer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.LongBuffer;
-import java.util.Arrays;
 
 /**
  * Task to merge the presorted data (sortedData.csv)
@@ -76,10 +75,10 @@ public class MergeTask implements Task {
                 finalIndex++;
             }
             // Remove old Adresschunks
-            chunkService.remove().remove(nameService.getChunkID("AC" + partnerIndex, 1000));
-            chunkService.remove().remove(nameService.getChunkID("AC" + ownIndex, 1000));
-            chunkService.remove().remove(nameService.getChunkID("SAC" + partnerIndex, 1000));
-            chunkService.remove().remove(nameService.getChunkID("SAC" + ownIndex, 1000));
+            chunkService.remove().remove(nameService.getChunkID("AC" + partnerIndex, 100));
+            chunkService.remove().remove(nameService.getChunkID("AC" + ownIndex, 100));
+            chunkService.remove().remove(nameService.getChunkID("SAC" + partnerIndex, 100));
+            chunkService.remove().remove(nameService.getChunkID("SAC" + ownIndex, 100));
 
 
             // Update Addresses
