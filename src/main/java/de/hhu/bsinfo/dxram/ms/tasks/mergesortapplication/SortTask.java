@@ -52,7 +52,7 @@ public class SortTask implements Task {
         threads = new Thread[availableResources];
         partialListLength = new int[availableResources];
         int lengthOfSplits = chunkAddress.length/availableResources;
-        int overhead = chunkAddress.length % availableResources;
+        int overhead = chunkAddress.length % lengthOfSplits;
 
         System.out.println("length of splits: " + lengthOfSplits);
         System.out.println("overhead: " + overhead);
