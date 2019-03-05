@@ -38,10 +38,10 @@ public class MergeTask implements Task {
         int ownIndex = Short.toUnsignedInt(ownSlaveID);
         int goThrough = getIntData(nameService.getChunkID("GT", 1000));
 
-        System.out.println("ownindex" + ownIndex);
-        System.out.println("gothrough" + goThrough);
-
         if (ownIndex % goThrough == 1){
+
+            System.out.println("ownindex " + ownIndex);
+            System.out.println("gothrough " + goThrough);
 
             int partnerIndex = ownIndex - 1;
 
