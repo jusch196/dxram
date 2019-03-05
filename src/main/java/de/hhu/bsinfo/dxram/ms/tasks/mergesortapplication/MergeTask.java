@@ -12,6 +12,7 @@ import de.hhu.bsinfo.dxutils.serialization.Importer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.LongBuffer;
+import java.util.Arrays;
 
 /**
  * Task to merge the presorted data (sortedData.csv)
@@ -35,7 +36,10 @@ public class MergeTask implements Task {
 
         short ownSlaveID = p_ctx.getCtxData().getSlaveId();
         int ownIndex = Short.toUnsignedInt(ownSlaveID);
-        int goThrough = getIntData(nameService.getChunkID("GT" + ownIndex, 1000));
+        int goThrough = getIntData(nameService.getChunkID("GT", 1000));
+
+        System.out.println("HIER IST SLAVE " + ownSlaveID);
+        System.out.println("MIT GT " + goThrough);
 
         if (ownIndex % goThrough == 1){
 
@@ -74,7 +78,6 @@ public class MergeTask implements Task {
                 indexRight++;
                 finalIndex++;
             }
-            System.out.println("BEENDET");
             // Remove old Adresschunks
             chunkService.remove().remove(nameService.getChunkID("AC" + partnerIndex, 1000));
             chunkService.remove().remove(nameService.getChunkID("AC" + ownIndex, 1000));
@@ -93,12 +96,16 @@ public class MergeTask implements Task {
             editChunkInt(finalArray.length, tmpAddressChunkId[0], chunkService);
             nameService.register(tmpAddressChunkId[0], "SAC" + partnerIndex/2);
 
-            // Update goThrough
-            editChunkInt(goThrough*2, nameService.getChunkID("GT" +partnerIndex, 1000), chunkService);
-            System.out.println("BEENDET");
-        } else
-            return 0;
+            System.out.println(Arrays.toString(finalArray));
+        }
 
+        if (ownSlaveID == p_ctx.getCtxData().getSlaveNodeIds().length -1 && ownIndex % 2 == 1) {
+            System.out.println("LÄNGE: " + p_ctx.getCtxData().getSlaveNodeIds().length);
+            System.out.println("GT: " + goThrough);
+            System.out.println("ownIndex: " + ownIndex);
+            editChunkInt(goThrough * 2, nameService.getChunkID("GT", 1000), chunkService);
+
+        }
         return 0;
     }
 

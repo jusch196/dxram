@@ -51,7 +51,7 @@ public class SortTask implements Task {
         int lengthOfSplits = chunkAddress.length/availableResources;
         int overhead = chunkAddress.length % availableResources;
 
-        // Run John von Neunmann mergesort on each partial list
+        // Run John von Neumann mergesort on each partial list
         for (int i = 0, j = 0; i < availableResources; i++) {
             if (j < overhead) {
                 threads[i] = new SortAlgorithm(chunkAddress, i * lengthOfSplits + j, lengthOfSplits + 1, chunkService);
