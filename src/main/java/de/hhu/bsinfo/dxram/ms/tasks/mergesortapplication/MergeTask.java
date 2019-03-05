@@ -92,14 +92,8 @@ public class MergeTask implements Task {
             chunkService.create().create(p_ctx.getCtxData().getOwnNodeId(), tmpAddressChunkId, 1, GLOBAL_CHUNK_SIZE);
             editChunkInt(finalArray.length, tmpAddressChunkId[0], chunkService);
             nameService.register(tmpAddressChunkId[0], "SAC" + partnerIndex/2);
-
-            System.out.println(Arrays.toString(finalArray));
         }
 
-        if (ownSlaveID == p_ctx.getCtxData().getSlaveNodeIds().length -1 && ownIndex % 2 == 1) {
-            editChunkInt(goThrough * 2, nameService.getChunkID("GT", 1000), chunkService);
-
-        }
         return 0;
     }
 

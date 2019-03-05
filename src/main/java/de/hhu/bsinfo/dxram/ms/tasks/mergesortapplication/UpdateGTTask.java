@@ -19,12 +19,12 @@ import java.nio.ByteBuffer;
  * @author Julian Schacht, julian-morten.schacht@uni-duesseldorf.de, 15.03.2019
  */
 
-public class UnevenMergeTask implements Task {
+public class UpdateGTTask implements Task {
 
     private final static int GLOBAL_CHUNK_SIZE = 64;
     private static ChunkService chunkService;
 
-    public UnevenMergeTask() {
+    public UpdateGTTask() {
     }
 
 
@@ -37,10 +37,12 @@ public class UnevenMergeTask implements Task {
         int ownIndex = Short.toUnsignedInt(ownSlaveID);
         int goThrough = getIntData(nameService.getChunkID("GT", 1000));
 
-        if (ownSlaveID == p_ctx.getCtxData().getSlaveNodeIds().length -1 && ownIndex %2 == 0){
-                nameService.register(nameService.getChunkID("AC" +ownIndex, 100), "AC" + ownIndex/2);
-                nameService.register(nameService.getChunkID("SAC" +ownIndex, 100), "SAC" + ownIndex/2);
-
+        if (ownSlaveID == p_ctx.getCtxData().getSlaveNodeIds().length -1 && ownIndex %2 == 0) {
+            if (ownIndex % 2 == 0) {
+                nameService.register(nameService.getChunkID("AC" + ownIndex, 100), "AC" + ownIndex / 2);
+                nameService.register(nameService.getChunkID("SAC" + ownIndex, 100), "SAC" + ownIndex / 2);
+            } else
+                editChunkInt(goThrough * 2, nameService.getChunkID("GT", 1000), chunkService);
         }
         return 0;
     }
