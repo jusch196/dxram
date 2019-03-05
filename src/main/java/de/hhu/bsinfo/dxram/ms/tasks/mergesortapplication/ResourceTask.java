@@ -25,6 +25,7 @@ public class ResourceTask implements Task{
         @Override
         public int execute(final TaskContext p_ctx) {
                 System.out.println("Starte Resource");
+                System.out.println("KERNE: " + Runtime.getRuntime().availableProcessors());
 
                 // Get services
                 ChunkService chunkService = p_ctx.getDXRAMServiceAccessor().getService(ChunkService.class);

@@ -82,11 +82,15 @@ public class MergeTask implements Task {
             long[] tmpAddressChunkId = new long[1];
             chunkService.create().create(p_ctx.getCtxData().getOwnNodeId(), tmpAddressChunkId, 1, GLOBAL_CHUNK_SIZE*finalArray.length);
             editChunkLongArray(finalArray, tmpAddressChunkId[0], chunkService);
+            chunkService.remove().remove(nameService.getChunkID("AC" + partnerIndex/2,100));
+            chunkService.remove().remove(nameService.getChunkID("AC" + ownIndex,100));
             nameService.register(tmpAddressChunkId[0], "AC" + partnerIndex/2);
 
             // Update Size
             chunkService.create().create(p_ctx.getCtxData().getOwnNodeId(), tmpAddressChunkId, 1, GLOBAL_CHUNK_SIZE);
             editChunkInt(finalArray.length, tmpAddressChunkId[0], chunkService);
+            chunkService.remove().remove(nameService.getChunkID("SAC" + partnerIndex/2,100));
+            chunkService.remove().remove(nameService.getChunkID("SAC" + ownIndex,100));
             nameService.register(tmpAddressChunkId[0], "SAC" + partnerIndex/2);
         }
 
