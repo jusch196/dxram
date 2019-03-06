@@ -27,25 +27,20 @@ class MergeAlgorithm extends Thread {
      */
     MergeAlgorithm(long[] array, int start, int end, int breakpoint, ChunkService chunkService){
 
-        long[] finalArray = new long[end-start];
+        long[] finalArray = new long[end-start+1];
 
         int indexLeft = start;
         int indexRight = breakpoint;
         int finalIndex = 0;
 
-        while (indexLeft < breakpoint && indexRight < end) {
+        while (indexLeft < breakpoint && indexRight <= end) {
 
-            int first = getIntData(array[indexLeft], 64, chunkService);
-            int second = getIntData(array[indexRight], 64, chunkService);
-
-            if (first < second) {
+            if (getIntData(array[indexLeft], 64, chunkService) < getIntData(array[indexRight], 64, chunkService)) {
                 finalArray[finalIndex] = array[indexLeft];
                 indexLeft++;
-                first = getIntData(array[indexLeft], 64, chunkService);
             } else {
                 finalArray[finalIndex] = array[indexRight];
                 indexRight++;
-                second = getIntData(array[indexRight], 64, chunkService);
             }
             finalIndex++;
         }
