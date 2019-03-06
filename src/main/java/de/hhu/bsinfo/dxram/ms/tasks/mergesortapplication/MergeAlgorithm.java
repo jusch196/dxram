@@ -33,7 +33,7 @@ class MergeAlgorithm extends Thread {
         int indexRight = breakpoint;
         int finalIndex = 0;
 
-        while (indexLeft < breakpoint && indexRight <= end) {
+        while (indexLeft < breakpoint && indexRight < end) {
 
             int first = getIntData(array[indexLeft], 64, chunkService);
             int second = getIntData(array[indexRight], 64, chunkService);

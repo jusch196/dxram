@@ -205,7 +205,7 @@ public class SortTask implements Task {
             start += partialListLength[i];
         }
         breakpoint = start + partialListLength[2*blockIndex];
-        end = breakpoint + partialListLength[2*blockIndex+1]-1;
+        end = breakpoint + partialListLength[2*blockIndex+1];
 
         threads[blockIndex] = new MergeAlgorithm(chunkAddress,start,end,breakpoint, chunkService);
     }
