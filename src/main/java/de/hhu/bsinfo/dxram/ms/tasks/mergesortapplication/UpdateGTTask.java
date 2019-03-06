@@ -34,18 +34,13 @@ public class UpdateGTTask implements Task {
         chunkService = p_ctx.getDXRAMServiceAccessor().getService(ChunkService.class);
 
         short ownSlaveID = p_ctx.getCtxData().getSlaveId();
-        int ownIndex = Short.toUnsignedInt(ownSlaveID);
         int goThrough = getIntData(nameService.getChunkID("GT", 100));
-        double step = (double) getIntData(nameService.getChunkID("ST", 100));
-        int numberOfWorkingSlaves = p_ctx.getCtxData().getSlaveNodeIds().length;
 
-        double updateIndex = (double) numberOfWorkingSlaves/step;
-
-
-        if (ownSlaveID == (int) Math.ceil(updateIndex) && ownIndex % 2 == 0)
+        if (ownSlaveID == (p_ctx.getCtxData().getSlaveNodeIds().length) -1 && ownSlaveID % goThrough == 1)
                 editChunkInt(goThrough*2, nameService.getChunkID("GT", 100), chunkService);
-
-        editChunkInt((int) step+1, nameService.getChunkID("ST", 100), chunkService);
+        else{
+            
+        }
         return 0;
     }
 
