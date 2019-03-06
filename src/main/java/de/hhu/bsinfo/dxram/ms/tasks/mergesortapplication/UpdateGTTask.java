@@ -36,11 +36,15 @@ public class UpdateGTTask implements Task {
         short ownSlaveID = p_ctx.getCtxData().getSlaveId();
         int ownIndex = Short.toUnsignedInt(ownSlaveID);
         int goThrough = getIntData(nameService.getChunkID("GT", 100));
+        int step = getIntData(nameService.getChunkID("ST", 100));
+        int numberOfWorkingSlaves = p_ctx.getCtxData().getSlaveNodeIds().length;
+        double updateIndex = numberOfWorkingSlaves/step;
 
 
-        if (ownSlaveID == p_ctx.getCtxData().getSlaveNodeIds().length -1 && ownIndex % 2 == 0)
+        if (ownSlaveID == updateIndex && ownIndex % 2 == 0)
                 editChunkInt(goThrough*2, nameService.getChunkID("GT", 100), chunkService);
-        return 0;
+
+        editChunkInt(step+1, nameService.getChunkID("ST", 100), chunkService);return 0;
     }
 
     @Override
