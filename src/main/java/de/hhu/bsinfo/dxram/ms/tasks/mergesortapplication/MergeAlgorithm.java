@@ -75,7 +75,7 @@ class MergeAlgorithm extends Thread {
         int teste =0;
 
         for (long i:finalArray){
-            test[teste] = getIntData(i, 1, chunkService);
+            test[teste] = getIntData(i, 64, chunkService);
             teste++;
         }
         System.out.println(Arrays.toString(test));
