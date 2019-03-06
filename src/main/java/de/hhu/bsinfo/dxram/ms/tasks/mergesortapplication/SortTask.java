@@ -50,7 +50,7 @@ public class SortTask implements Task {
         threads = new Thread[availableResources];
         partialListLength = new int[availableResources];
         int lengthOfSplits = chunkAddress.length/availableResources;
-        int overhead = chunkAddress.length % lengthOfSplits;
+        int overhead = chunkAddress.length % availableResources;
 
         // Run John von Neumann mergesort on each partial list
         for (int i = 0, j = 0; i < availableResources; i++) {
@@ -59,7 +59,7 @@ public class SortTask implements Task {
                 partialListLength[i] = lengthOfSplits + 1;
                 j++;
             } else {
-                threads[i] = new SortAlgorithm(chunkAddress, (i * lengthOfSplits) + overhead, lengthOfSplits, chunkService);
+                threads[i] = new SortAlgorithm(chunkAddress, (i * lengthOfSplits) + j, lengthOfSplits, chunkService);
                 partialListLength[i] = lengthOfSplits;
             }
         }
