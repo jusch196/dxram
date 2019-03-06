@@ -103,6 +103,8 @@ public class SortTask implements Task {
             partialListLength = tmp;
         }
 
+        System.out.println("Adresslänge: " + chunkAddress.length);
+
         // Update Chunkaddresses
         editChunkLongArray(chunkAddress, nameService.getChunkID("AC" + ownIndex, 1000), chunkService);
 
