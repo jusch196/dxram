@@ -12,6 +12,7 @@ import de.hhu.bsinfo.dxutils.serialization.Importer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.LongBuffer;
+import java.util.Arrays;
 
 /**
  * Task to Sort data localy (sortedData.csv)
@@ -70,6 +71,8 @@ public class SortTask implements Task {
                 partialListLength[i] = lengthOfSplits;
             }
         }
+        System.out.println("partitial listlength: " + Arrays.toString(partialListLength));
+
 
         while (availableResources > 1){
             double splitCheck = (double) availableResources/2;
