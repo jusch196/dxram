@@ -41,6 +41,8 @@ public class UpdateGTTask implements Task {
         if (numberOfWorkingNodes %2 == 1 && (ownSlaveID == numberOfWorkingNodes-1)){
             nameService.register(nameService.getChunkID("AC" + ownSlaveID,100), "AC" + (int) Math.ceil((double) ownSlaveID/2));
             nameService.register(nameService.getChunkID("SAC" + ownSlaveID,100), "SAC" + (int) Math.ceil((double) ownSlaveID/2));
+            editChunkInt((int) Math.ceil((double) ownSlaveID/2), nameService.getChunkID("WN", 100), chunkService);
+
         }
         else if (numberOfWorkingNodes %2 == 0 && (ownSlaveID == numberOfWorkingNodes-1)){
             editChunkInt(goThrough*2, nameService.getChunkID("GT", 100), chunkService);
