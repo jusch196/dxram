@@ -40,6 +40,8 @@ public class SortTask implements Task {
         short ownSlaveID = p_ctx.getCtxData().getSlaveId();
         int ownIndex = Short.toUnsignedInt(ownSlaveID);
 
+        System.out.println("ENDE: " +ownIndex + "- " + System.nanoTime());
+
         // Get SortTaskBeginChunk
         int size = getIntData(nameService.getChunkID("SAC" + ownIndex, 1000));
         chunkAddress = getLongArray(nameService.getChunkID("AC" + ownIndex, 1000), size);

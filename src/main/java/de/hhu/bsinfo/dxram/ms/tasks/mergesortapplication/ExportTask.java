@@ -40,7 +40,7 @@ public class ExportTask implements Task {
         short ownSlaveID = p_ctx.getCtxData().getSlaveId();
         int ownIndex = Short.toUnsignedInt(ownSlaveID);
 
-        System.out.println("ENDE: " +ownIndex + "-" + System.nanoTime());
+        System.out.println("ENDE: " +ownIndex + "- " + System.nanoTime());
 
 
         int outputSplit = getIntData(nameService.getChunkID("WO", 1000));
