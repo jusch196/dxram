@@ -50,13 +50,18 @@ public class MergeTask implements Task {
             int indexRight = 0;
             int finalIndex = 0;
 
+            int first = getIntData(firstChunkAddresses[indexLeft]);
+            int second = getIntData(firstChunkAddresses[indexRight]);
+            
             while (indexLeft < sizeOne && indexRight < sizeTwo) {
-                if (getIntData(firstChunkAddresses[indexLeft]) < getIntData(secondChunkAddresses[indexRight])) {
+                if (first < second) {
                     finalArray[finalIndex] = firstChunkAddresses[indexLeft];
                     indexLeft++;
+                    first = getIntData(firstChunkAddresses[indexLeft]);
                 } else {
                     finalArray[finalIndex] = secondChunkAddresses[indexRight];
                     indexRight++;
+                    second= getIntData(firstChunkAddresses[indexRight]);
                 }
                 finalIndex++;
             }
