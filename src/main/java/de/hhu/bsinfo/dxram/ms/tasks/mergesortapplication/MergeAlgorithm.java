@@ -2,8 +2,8 @@ package de.hhu.bsinfo.dxram.ms.tasks.mergesortapplication;
 
 import de.hhu.bsinfo.dxmem.data.ChunkByteArray;
 import de.hhu.bsinfo.dxram.chunk.ChunkService;
+
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 
 /**
  * Merges the adresseslists of the data local on one thread
@@ -70,15 +70,6 @@ class MergeAlgorithm extends Thread {
         }
 
         System.arraycopy(finalArray, 0, array, start, finalIndex);
-
-        int[] test = new int[finalArray.length];
-        int teste =0;
-
-        for (long i:finalArray){
-            test[teste] = getIntData(i, 64, chunkService);
-            teste++;
-        }
-        System.out.println(Arrays.toString(test));
     }
 
     /**
