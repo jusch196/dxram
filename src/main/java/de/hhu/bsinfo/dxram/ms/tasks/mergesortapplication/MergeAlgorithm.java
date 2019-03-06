@@ -45,11 +45,13 @@ class MergeAlgorithm extends Thread {
             if (first < second) {
                 finalArray[finalIndex] = array[indexLeft];
                 indexLeft++;
-                first = getIntData(array[indexLeft], 64, chunkService);
+                if (indexLeft<breakpoint)
+                    first = getIntData(array[indexLeft], 64, chunkService);
             } else {
                 finalArray[finalIndex] = array[indexRight];
                 indexRight++;
-                second = getIntData(array[indexRight], 64, chunkService);
+                if (indexRight<end)
+                    second = getIntData(array[indexRight], 64, chunkService);
             }
             finalIndex++;
         }
