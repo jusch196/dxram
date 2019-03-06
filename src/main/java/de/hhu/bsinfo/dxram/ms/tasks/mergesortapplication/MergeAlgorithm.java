@@ -60,7 +60,7 @@ class MergeAlgorithm extends Thread {
             finalIndex++;
         }
 
-        while (indexRight <= end) {
+        while (indexRight < end) {
             finalArray[finalIndex] = array[indexRight];
             indexRight++;
             finalIndex++;
