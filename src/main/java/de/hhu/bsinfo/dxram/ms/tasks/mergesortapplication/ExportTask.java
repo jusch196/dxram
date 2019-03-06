@@ -31,7 +31,7 @@ public class ExportTask implements Task {
 
     @Override
     public int execute(TaskContext p_ctx) throws IOException {
-        System.out.println("ENDE: " + System.nanoTime());
+
         // Get Services
         NameserviceService nameService = p_ctx.getDXRAMServiceAccessor().getService(NameserviceService.class);
         chunkService = p_ctx.getDXRAMServiceAccessor().getService(ChunkService.class);
@@ -39,6 +39,9 @@ public class ExportTask implements Task {
         // Get ID
         short ownSlaveID = p_ctx.getCtxData().getSlaveId();
         int ownIndex = Short.toUnsignedInt(ownSlaveID);
+
+        System.out.println("ENDE: " +ownIndex + "-" + System.nanoTime());
+
 
         int outputSplit = getIntData(nameService.getChunkID("WO", 1000));
 
