@@ -37,7 +37,7 @@ public class UpdateGTTask implements Task {
         short ownSlaveID = p_ctx.getCtxData().getSlaveId();
         int goThrough = getIntData(nameService.getChunkID("GT", 100));
 
-        if (ownSlaveID == (p_ctx.getCtxData().getSlaveNodeIds().length) -1 && ownSlaveID % goThrough == 1)
+        if (ownSlaveID == (p_ctx.getCtxData().getSlaveNodeIds().length) -1 && ownSlaveID % goThrough == 0)
                 editChunkInt(goThrough*2, nameService.getChunkID("GT", 100), chunkService);
         else if (ownSlaveID == (p_ctx.getCtxData().getSlaveNodeIds().length) -1 && ownSlaveID % goThrough == 0){
 
