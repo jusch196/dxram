@@ -2,7 +2,6 @@ package de.hhu.bsinfo.dxram.ms.tasks.mergesortapplication;
 
 import de.hhu.bsinfo.dxmem.data.ChunkByteArray;
 import de.hhu.bsinfo.dxram.chunk.ChunkService;
-
 import java.nio.ByteBuffer;
 
 /**
@@ -34,26 +33,9 @@ class MergeAlgorithm extends Thread {
         int indexRight = breakpoint;
         int finalIndex = 0;
 
-        System.out.println("breakpoint: " +breakpoint);
-        System.out.println("start: " +start);
-        System.out.println("end: " +end);
-
-        int first;
-<<<<<<< HEAD
-        int second;
-=======
-        int second; 
->>>>>>> 5725f74f3c0b0d0ce7d77e5b24b69e4a7424a313
-
         while (indexLeft < breakpoint && indexRight <= end) {
-            first = getIntData(array[indexLeft], 64, chunkService);
-            second = getIntData(array[indexRight], 64, chunkService);
 
-<<<<<<< HEAD
-            if (getIntData(array[indexLeft], 64, chunkService); < getIntData(array[indexRight], 64, chunkService)) {
-=======
-            if (first < second) {
->>>>>>> 5725f74f3c0b0d0ce7d77e5b24b69e4a7424a313
+            if (getIntData(array[indexLeft], 64, chunkService) < getIntData(array[indexRight], 64, chunkService)) {
                 finalArray[finalIndex] = array[indexLeft];
                 indexLeft++;
             } else {

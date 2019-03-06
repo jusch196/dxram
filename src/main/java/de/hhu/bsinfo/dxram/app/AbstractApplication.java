@@ -1,6 +1,5 @@
 package de.hhu.bsinfo.dxram.app;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
 import org.apache.logging.log4j.LogManager;
@@ -48,7 +47,7 @@ public abstract class AbstractApplication extends Thread {
      * @param p_args
      *         Arguments passed to your application
      */
-    public abstract void main(final String[] p_args) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException;
+    public abstract void main(final String[] p_args);
 
     /**
      * Signal by DXRAM to shut down your application.

@@ -12,7 +12,6 @@ import de.hhu.bsinfo.dxutils.serialization.Importer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.LongBuffer;
-import java.util.Arrays;
 
 /**
  * Task to Sort data localy (sortedData.csv)
@@ -41,24 +40,16 @@ public class SortTask implements Task {
         short ownSlaveID = p_ctx.getCtxData().getSlaveId();
         int ownIndex = Short.toUnsignedInt(ownSlaveID);
 
-        System.out.println("START: " +ownIndex + "- " + System.nanoTime());
-
         // Get SortTaskBeginChunk
         int size = getIntData(nameService.getChunkID("SAC" + ownIndex, 1000));
         chunkAddress = getLongArray(nameService.getChunkID("AC" + ownIndex, 1000), size);
 
         int availableResources = Runtime.getRuntime().availableProcessors();
 
-        System.out.println("ressourcen: " + availableResources);
-
         threads = new Thread[availableResources];
         partialListLength = new int[availableResources];
         int lengthOfSplits = chunkAddress.length/availableResources;
-        int overhead = chunkAddress.length % availableResources;
-
-        System.out.println("overhead: " +overhead);
-        System.out.println("length of splits: " +lengthOfSplits);
-        System.out.println("chunk adress length: " +chunkAddress.length);
+        int overhead = chunkAddress.length % lengthOfSplits;
 
         // Run John von Neumann mergesort on each partial list
         for (int i = 0, j = 0; i < availableResources; i++) {
@@ -71,7 +62,6 @@ public class SortTask implements Task {
                 partialListLength[i] = lengthOfSplits;
             }
         }
-        System.out.println("partitial listlength: " + Arrays.toString(partialListLength));
 
         while (availableResources > 1){
             double splitCheck = (double) availableResources/2;
@@ -207,7 +197,7 @@ public class SortTask implements Task {
             start += partialListLength[i];
         }
         breakpoint = start + partialListLength[2*blockIndex];
-        end = breakpoint + partialListLength[2*blockIndex+1]-1;
+        end = breakpoint + partialListLength[2*blockIndex+1] -1;
 
         threads[blockIndex] = new MergeAlgorithm(chunkAddress,start,end,breakpoint, chunkService);
     }
