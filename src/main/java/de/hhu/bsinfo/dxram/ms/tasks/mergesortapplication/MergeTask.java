@@ -39,36 +39,45 @@ public class MergeTask implements Task {
         if (ownIndex % goThrough == 1){
             int partnerIndex = ownIndex - 1;
 
-            int sizeone = getIntData(nameService.getChunkID("SAC" + partnerIndex, 100));
-            int sizetwo = getIntData(nameService.getChunkID("SAC" + ownIndex, 100));
+            System.out.println("CHECK");
 
-            long[] firstChunkAdresses = getLongArray(nameService.getChunkID("AC" + partnerIndex, 100), sizeone);
-            long[] secondChunkAdresses = getLongArray(nameService.getChunkID("AC" + ownIndex, 100), sizetwo);
+            ChunkByteArray check = new ChunkByteArray(nameService.getChunkID("SAC" + ownIndex, 100), 64);
+            chunkService.get().get(check);
 
-            long[] finalArray = new long[sizeone+sizetwo];
+            System.out.println(nameService.getChunkID("SAC" + ownIndex, 100));
+            System.out.println(check.toString());
+            System.out.println(Short.toUnsignedInt(ownSlaveID));
+
+            int sizeOne = getIntData(nameService.getChunkID("SAC" + partnerIndex, 100));
+            int sizeTwo = getIntData(nameService.getChunkID("SAC" + ownIndex, 100));
+
+            long[] firstChunkAddresses = getLongArray(nameService.getChunkID("AC" + partnerIndex, 100), sizeOne);
+            long[] secondChunkAddresses = getLongArray(nameService.getChunkID("AC" + ownIndex, 100), sizeTwo);
+
+            long[] finalArray = new long[sizeOne +sizeTwo];
             int indexLeft = 0;
             int indexRight = 0;
             int finalIndex = 0;
 
-            while (indexLeft < sizeone && indexRight < sizetwo) {
-                if (getIntData(firstChunkAdresses[indexLeft]) < getIntData(secondChunkAdresses[indexRight])) {
-                    finalArray[finalIndex] = firstChunkAdresses[indexLeft];
+            while (indexLeft < sizeOne && indexRight < sizeTwo) {
+                if (getIntData(firstChunkAddresses[indexLeft]) < getIntData(secondChunkAddresses[indexRight])) {
+                    finalArray[finalIndex] = firstChunkAddresses[indexLeft];
                     indexLeft++;
                 } else {
-                    finalArray[finalIndex] = secondChunkAdresses[indexRight];
+                    finalArray[finalIndex] = secondChunkAddresses[indexRight];
                     indexRight++;
                 }
                 finalIndex++;
             }
 
-            while (indexLeft < sizeone) {
-                finalArray[finalIndex] = firstChunkAdresses[indexLeft];
+            while (indexLeft < sizeOne) {
+                finalArray[finalIndex] = firstChunkAddresses[indexLeft];
                 indexLeft++;
                 finalIndex++;
             }
 
-            while (indexRight < sizetwo) {
-                finalArray[finalIndex] = secondChunkAdresses[indexRight];
+            while (indexRight < sizeTwo) {
+                finalArray[finalIndex] = secondChunkAddresses[indexRight];
                 indexRight++;
                 finalIndex++;
             }
