@@ -39,15 +39,6 @@ public class MergeTask implements Task {
         if (ownIndex % goThrough == 1){
             int partnerIndex = ownIndex - 1;
 
-            System.out.println("CHECK");
-
-            ChunkByteArray check = new ChunkByteArray(nameService.getChunkID("SAC" + ownIndex, 100), 64);
-            chunkService.get().get(check);
-
-            System.out.println(nameService.getChunkID("SAC" + ownIndex, 100));
-            System.out.println(check.toString());
-            System.out.println(Short.toUnsignedInt(ownSlaveID));
-
             int sizeOne = getIntData(nameService.getChunkID("SAC" + partnerIndex, 100));
             int sizeTwo = getIntData(nameService.getChunkID("SAC" + ownIndex, 100));
 
