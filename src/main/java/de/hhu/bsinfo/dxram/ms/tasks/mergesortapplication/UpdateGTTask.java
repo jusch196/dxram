@@ -37,8 +37,10 @@ public class UpdateGTTask implements Task {
         short ownSlaveID = p_ctx.getCtxData().getSlaveId();
         int goThrough = getIntData(nameService.getChunkID("GT", 100));
         int numberOfWorkingNodes = getIntData(nameService.getChunkID("WN", 100));
+        System.out.println("Workernodes: " + numberOfWorkingNodes);
 
         if (numberOfWorkingNodes %2 == 1 && (ownSlaveID == numberOfWorkingNodes-1)){
+            System.out.println("Update durchgeführt");
             nameService.register(nameService.getChunkID("AC" + ownSlaveID,100), "AC" + (int) Math.ceil((double) ownSlaveID/2));
             nameService.register(nameService.getChunkID("SAC" + ownSlaveID,100), "SAC" + (int) Math.ceil((double) ownSlaveID/2));
             editChunkInt((int) Math.ceil((double) ownSlaveID/2), nameService.getChunkID("WN", 100), chunkService);
