@@ -42,6 +42,13 @@ public class MergeTask implements Task {
             int sizeone = getIntData(nameService.getChunkID("SAC" + partnerIndex, 100));
             int sizetwo = getIntData(nameService.getChunkID("SAC" + ownIndex, 100));
 
+
+            System.out.println("Gothrough: " + goThrough);
+            System.out.println("OwnIndex: " + ownIndex);
+            System.out.println("Größe erste Liste: " + sizeone);
+            System.out.println("Größe zweite Liste: " + sizetwo);
+
+
             long[] firstChunkAdresses = getLongArray(nameService.getChunkID("AC" + partnerIndex, 100), sizeone);
             long[] secondChunkAdresses = getLongArray(nameService.getChunkID("AC" + ownIndex, 100), sizetwo);
 
