@@ -73,6 +73,13 @@ public class SortTask implements Task {
         }
         System.out.println("partitial listlength: " + Arrays.toString(partialListLength));
 
+        int[] test = new int[chunkAddress.length];
+        int teste =0;
+        for (long i:chunkAddress){
+            test[teste] = getIntData(i);
+            teste++;
+        }
+        System.out.println(Arrays.toString(test));
 
         while (availableResources > 1){
             double splitCheck = (double) availableResources/2;
