@@ -36,13 +36,14 @@ public class UpdateGTTask implements Task {
 
         short ownSlaveID = p_ctx.getCtxData().getSlaveId();
         int goThrough = getIntData(nameService.getChunkID("GT", 100));
+        int numberOfWorkingNodes = getIntData(nameService.getChunkID("WN", 100));
 
-        if (ownSlaveID == (p_ctx.getCtxData().getSlaveNodeIds().length) -1 && ownSlaveID % goThrough == 0)
-                editChunkInt(goThrough*2, nameService.getChunkID("GT", 100), chunkService);
-        else if (ownSlaveID == (p_ctx.getCtxData().getSlaveNodeIds().length) -1 && ownSlaveID % goThrough == 0){
-
-            nameService.register(nameService.getChunkID("AC" + ownSlaveID,100), "AC" + (int) Math.ceil((double) ownSlaveID/goThrough));
-            nameService.register(nameService.getChunkID("SAC" + ownSlaveID,100), "SAC" + (int) Math.ceil((double) ownSlaveID/goThrough));
+        if (numberOfWorkingNodes %2 == 1 && (ownSlaveID == numberOfWorkingNodes-1)){
+            nameService.register(nameService.getChunkID("AC" + ownSlaveID,100), "AC" + (int) Math.ceil((double) ownSlaveID/2));
+            nameService.register(nameService.getChunkID("SAC" + ownSlaveID,100), "SAC" + (int) Math.ceil((double) ownSlaveID/2));
+        }
+        else if (numberOfWorkingNodes %2 == 0 && (ownSlaveID == numberOfWorkingNodes-1)){
+            editChunkInt(goThrough*2, nameService.getChunkID("GT", 100), chunkService);
         }
         return 0;
     }
