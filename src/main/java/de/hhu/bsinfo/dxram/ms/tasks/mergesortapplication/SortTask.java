@@ -40,7 +40,7 @@ public class SortTask implements Task {
         short ownSlaveID = p_ctx.getCtxData().getSlaveId();
         int ownIndex = Short.toUnsignedInt(ownSlaveID);
 
-        System.out.println("ENDE: " +ownIndex + "- " + System.nanoTime());
+        System.out.println("START: " +ownIndex + "- " + System.nanoTime());
 
         // Get SortTaskBeginChunk
         int size = getIntData(nameService.getChunkID("SAC" + ownIndex, 1000));
@@ -48,10 +48,16 @@ public class SortTask implements Task {
 
         int availableResources = Runtime.getRuntime().availableProcessors();
 
+        System.out.println("ressourcen: " + availableResources);
+
         threads = new Thread[availableResources];
         partialListLength = new int[availableResources];
         int lengthOfSplits = chunkAddress.length/availableResources;
         int overhead = chunkAddress.length % availableResources;
+
+        System.out.println("overhead: " +overhead);
+        System.out.println("length of splits: " +lengthOfSplits);
+        System.out.println("chunk adress length: " +chunkAddress.length);
 
         // Run John von Neumann mergesort on each partial list
         for (int i = 0, j = 0; i < availableResources; i++) {
