@@ -11,6 +11,7 @@ import de.hhu.bsinfo.dxutils.serialization.Importer;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.LongBuffer;
 
 /**
  * Task to merge the presorted data (sortedData.csv) in case of uneven number
@@ -38,8 +39,10 @@ public class UpdateGTTask implements Task {
 
         if (ownSlaveID == (p_ctx.getCtxData().getSlaveNodeIds().length) -1 && ownSlaveID % goThrough == 1)
                 editChunkInt(goThrough*2, nameService.getChunkID("GT", 100), chunkService);
-        else{
-            
+        else if (ownSlaveID == (p_ctx.getCtxData().getSlaveNodeIds().length) -1 && ownSlaveID % goThrough == 0){
+
+            nameService.register(nameService.getChunkID("AC" + ownSlaveID,100), "AC" + (int) Math.ceil((double) ownSlaveID/goThrough));
+            nameService.register(nameService.getChunkID("SAC" + ownSlaveID,100), "SAC" + (int) Math.ceil((double) ownSlaveID/goThrough));
         }
         return 0;
     }
@@ -94,4 +97,39 @@ public class UpdateGTTask implements Task {
         ChunkByteArray chunkByteArray = new ChunkByteArray(chunkId, byteBuffer.array());
         chunkService.put().put(chunkByteArray);
     }
+
+    /**
+     * Get the shortvalue of a chunk
+     * @param chunkId
+     *          ID of the chunk
+     * @param chunkService
+     *          Chunkservice to manage the operation
+     * @return
+     *      Shortvalue of the chunk
+     */
+    private short getShortData(long chunkId, ChunkService chunkService){
+        ChunkByteArray chunk = new ChunkByteArray(chunkId, GLOBAL_CHUNK_SIZE);
+        chunkService.get().get(chunk);
+        byte[] byteData = chunk.getData();
+        return ByteBuffer.wrap(byteData).getShort();
+    }
+
+    /**
+     * Edits the longarray of a chunk
+     *
+     * @param array
+     *          longarray to put
+     * @param chunkId
+     *          ChunkID of the editable chunk
+     * @param chunkService
+     *          Chunkservice to manage the operation
+     */
+    private void editChunkLongArray(long[] array, long chunkId, ChunkService chunkService){
+        ByteBuffer byteBuffer = ByteBuffer.allocate(array.length*GLOBAL_CHUNK_SIZE);
+        LongBuffer longBuffer = byteBuffer.asLongBuffer();
+        longBuffer.put(array);
+        ChunkByteArray chunkByteArray = new ChunkByteArray(chunkId, byteBuffer.array());
+        chunkService.put().put(chunkByteArray);
+    }
 }
+
