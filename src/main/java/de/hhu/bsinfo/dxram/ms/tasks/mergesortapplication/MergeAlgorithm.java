@@ -26,6 +26,7 @@ class MergeAlgorithm extends Thread {
      *          Chunkservice to manage the operations
      */
     MergeAlgorithm(long[] array, int start, int end, int breakpoint, ChunkService chunkService){
+        System.out.println("TEST");
 
         long[] finalArray = new long[end-start+1];
 
