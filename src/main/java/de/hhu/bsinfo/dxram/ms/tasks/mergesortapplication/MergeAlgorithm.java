@@ -33,6 +33,10 @@ class MergeAlgorithm extends Thread {
         int indexRight = breakpoint;
         int finalIndex = 0;
 
+        System.out.println("breakpoint: " +breakpoint);
+        System.out.println("start: " +start);
+        System.out.println("end: " +end);
+
         while (indexLeft < breakpoint && indexRight < end) {
 
             int first = getIntData(array[indexLeft], 64, chunkService);
