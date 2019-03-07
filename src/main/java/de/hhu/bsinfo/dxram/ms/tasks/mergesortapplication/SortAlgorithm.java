@@ -25,7 +25,7 @@ class SortAlgorithm extends Thread {
                 } catch (InterruptedException e) {
                         e.printStackTrace();
                 }
-                mergeSortJvN(array,start, length);
+                sort(start, length);
 
         }
 
@@ -121,85 +121,4 @@ class SortAlgorithm extends Thread {
                 byte[] byteData = chunk.getData();
                 return ByteBuffer.wrap(byteData).getInt();
         }
-
-    private static void mergeJvN(long[] array, int left, int breakpoint, int right) {
-        int i, j, k;
-        int n1 = breakpoint - left + 1;
-        int n2 =  right - breakpoint;
-
-        // create temp arrays
-        long[] L = new long[n1];
-        long[] R = new long[n2];
-
-        // Copy data to temp arrays L[] and R[]
-        for (i = 0; i < n1; i++)
-            L[i] = array[left + i];
-        for (j = 0; j < n2; j++)
-            R[j] = array[breakpoint + 1+ j];
-
-        // Merge the temp arrays back into arr[l..r]
-        i = 0; // Initial index of first subarray
-        j = 0; // Initial index of second subarray
-        k = left; // Initial index of merged subarray
-
-        int first=0, second=0;
-        boolean run = false;
-
-        if (i < n1 && j < n2){
-            first = getIntData(L[i]);
-            second = getIntData(R[j]);
-            run = true;
-        }
-
-        while (run)
-        {
-            if (first <= second) {
-                array[k] = L[i];
-                i++;
-                if (i<n1)
-                    first = getIntData(L[i]);
-                else
-                    run=false;
-            }
-            else {
-                array[k] = R[j];
-                j++;
-                if (j<n2)
-                    second=getIntData(R[j]);
-                else
-                    run=false;
-            }
-            k++;
-        }
-
-        //Copy the remaining elements of L[], if there are any
-        while (i < n1)
-        {
-            array[k] = L[i];
-            i++;
-            k++;
-        }
-
-        // Copy the remaining elements of R[], if there are any
-        while (j < n2)
-        {
-            array[k] = R[j];
-            j++;
-            k++;
-        }
-    }
-    private static void mergeSortJvN(long[] array, int left, int right) {
-        if (left < right)
-        {
-            // Same as (l+r)/2, but avoids overflow for
-            // large l and h
-            int m = left+(right-left)/2;
-
-            // Sort first and second halves
-            mergeSortJvN(array, left, m);
-            mergeSortJvN(array, m+1, right);
-
-            mergeJvN(array, left, m, right);
-        }
-    }
 }

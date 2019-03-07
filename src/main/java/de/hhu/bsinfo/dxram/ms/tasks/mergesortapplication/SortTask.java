@@ -12,6 +12,7 @@ import de.hhu.bsinfo.dxutils.serialization.Importer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.LongBuffer;
+import java.util.Arrays;
 
 /**
  * Task to Sort data localy (sortedData.csv)
@@ -105,6 +106,13 @@ public class SortTask implements Task {
 
         // Update Chunkaddresses
         editChunkLongArray(chunkAddress, nameService.getChunkID("AC" + ownIndex, 1000), chunkService);
+
+        int[] array = new int[chunkAddress.length];
+        for (int i=0;i<chunkAddress.length;i++){
+            array[i] = getIntData(chunkAddress[i]);
+        }
+        System.out.println(Arrays.toString(array));
+
 
         return 0;
     }
