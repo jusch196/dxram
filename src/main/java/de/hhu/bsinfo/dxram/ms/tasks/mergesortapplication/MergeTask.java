@@ -12,7 +12,6 @@ import de.hhu.bsinfo.dxutils.serialization.Importer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.LongBuffer;
-import java.util.Arrays;
 
 /**
  * Task to merge the presorted data (sortedData.csv)
@@ -52,13 +51,6 @@ public class MergeTask implements Task {
 
             int first=0, second=0;
             boolean run = false;
-
-            int[] array = new int[secondChunkAdresses.length];
-            for (int i=0;i<secondChunkAdresses.length;i++){
-                array[i] = getIntData(secondChunkAdresses[i]);
-            }
-            System.out.println(Arrays.toString(array));
-
 
             if (indexLeft < sizeone && indexRight < sizetwo){
                 first = getIntData(firstChunkAdresses[indexLeft]);
