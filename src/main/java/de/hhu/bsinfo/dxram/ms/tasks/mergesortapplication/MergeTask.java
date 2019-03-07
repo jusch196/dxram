@@ -47,6 +47,16 @@ public class MergeTask implements Task {
             long[] firstChunkAdresses = getLongArray(nameService.getChunkID("AC" + partnerIndex, 100), sizeone);
             long[] secondChunkAdresses = getLongArray(nameService.getChunkID("AC" + ownSlaveID, 100), sizetwo);
 
+            int[] left = new int[firstChunkAdresses.length];
+            int[] right = new int[secondChunkAdresses.length];
+
+            for (int i=0;i<firstChunkAdresses.length;i++)
+                left[i] = getIntData(firstChunkAdresses[i]);
+
+            for (int i=0; i<secondChunkAdresses.length;i++)
+                right[i] = getIntData(secondChunkAdresses[i]);
+
+
             long[] finalArray = new long[sizeone+sizetwo];
             int indexLeft = 0;
             int indexRight = 0;
@@ -76,7 +86,7 @@ public class MergeTask implements Task {
 
 
             while (indexLeft < sizeone && indexRight < sizetwo) {
-                if (getIntData(firstChunkAdresses[indexLeft]) < getIntData(firstChunkAdresses[indexRight])) {
+                if (left[indexLeft] < right[indexRight]) {
                     finalArray[finalIndex] = firstChunkAdresses[indexLeft];
                     indexLeft++;
 
