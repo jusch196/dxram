@@ -52,10 +52,10 @@ class SortAlgorithm extends Thread {
                 int[] right = new int[length-breakpoint];
 
                 for (int i=0;i<breakpoint;i++)
-                    left[i] = getIntData(array[i]);
+                    left[i] = getIntData(array[start+i]);
 
                 for (int i=0; i<length-breakpoint;i++)
-                    right[i] = getIntData(array[breakpoint+i]);
+                    right[i] = getIntData(array[start+breakpoint+i]);
 
                 while (indexLeft < breakpoint && indexRight < length-breakpoint) {
                         if (left[indexLeft] < right[indexRight]) {
