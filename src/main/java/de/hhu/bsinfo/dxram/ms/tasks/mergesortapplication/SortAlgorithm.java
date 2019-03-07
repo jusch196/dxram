@@ -48,30 +48,22 @@ class SortAlgorithm extends Thread {
                 int indexRight = 0;
                 int finalIndex = 0;
 
-                int first=0, second=0;
-                boolean run = false;
+                int[] left = new int[breakpoint];
+                int[] right = new int[length-breakpoint];
 
-                if (indexLeft < breakpoint && indexRight < length-breakpoint){
-                        first = getIntData(array[start+indexLeft]);
-                        second = getIntData(array[start + breakpoint + indexRight]);
-                        run = true;
-                }
+                for (int i=0;i<breakpoint;i++)
+                    left[i] = getIntData(array[i]);
 
-                while (run) {
-                        if (first < second) {
+                for (int i=breakpoint; i<length;i++)
+                    right[i] = getIntData(array[i]);
+
+                while (indexLeft < breakpoint && indexRight < length-breakpoint) {
+                        if (left[indexLeft] < right[indexRight]) {
                                 finalArray[finalIndex] = array[start + indexLeft];
                                 indexLeft++;
-                                if (indexLeft < breakpoint)
-                                        first = getIntData(array[start+indexLeft]);
-                                else
-                                        run = false;
                         } else {
                                 finalArray[finalIndex] = array[start + breakpoint + indexRight];
                                 indexRight++;
-                                if (indexRight < length-breakpoint)
-                                        second = getIntData(array[start + breakpoint + indexRight]);
-                                else
-                                        run = false;
                         }
                         finalIndex++;
                 }

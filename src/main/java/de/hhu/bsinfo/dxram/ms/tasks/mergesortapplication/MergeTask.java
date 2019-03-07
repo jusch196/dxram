@@ -9,8 +9,6 @@ import de.hhu.bsinfo.dxram.nameservice.NameserviceService;
 import de.hhu.bsinfo.dxutils.serialization.Exporter;
 import de.hhu.bsinfo.dxutils.serialization.Importer;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -62,29 +60,7 @@ public class MergeTask implements Task {
             int indexRight = 0;
             int finalIndex = 0;
 
-            String filename = "dxapp/data/sortedDataFULLf"+ownSlaveID+".csv";
-            BufferedWriter outputWriter = new BufferedWriter(new FileWriter(filename));
-
-            for (long chunkAddress1 : firstChunkAdresses) {
-                outputWriter.write(getIntData(chunkAddress1) + ", ");
-            }
-
-            outputWriter.flush();
-            outputWriter.close();
-
-             filename = "dxapp/data/sortedDataFULLs"+ownSlaveID+".csv";
-             outputWriter = new BufferedWriter(new FileWriter(filename));
-
-            for (long chunkAddress1 : secondChunkAdresses) {
-                outputWriter.write(getIntData(chunkAddress1) + ", ");
-            }
-
-            outputWriter.flush();
-            outputWriter.close();
-
-
-
-
+            
             while (indexLeft < sizeone && indexRight < sizetwo) {
                 if (left[indexLeft] < right[indexRight]) {
                     finalArray[finalIndex] = firstChunkAdresses[indexLeft];
@@ -119,16 +95,6 @@ public class MergeTask implements Task {
             chunkService.create().create(getShortData(nameService.getChunkID("SID" + partnerIndex/2, 100),chunkService), tmpAddressChunkId, 1, GLOBAL_CHUNK_SIZE);
             editChunkInt(finalArray.length, tmpAddressChunkId[0], chunkService);
             nameService.register(tmpAddressChunkId[0], "SAC" + partnerIndex/2);
-
-             filename = "dxapp/data/sortedDataFULLMerge"+ownSlaveID+numberOfWorkingNodes+".csv";
-             outputWriter = new BufferedWriter(new FileWriter(filename));
-
-            for (long chunkAddress1 : finalArray) {
-                outputWriter.write(getIntData(chunkAddress1) + ", ");
-            }
-
-            outputWriter.flush();
-            outputWriter.close();
         }
 
 
