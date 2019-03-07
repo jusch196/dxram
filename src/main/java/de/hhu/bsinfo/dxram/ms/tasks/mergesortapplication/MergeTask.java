@@ -104,17 +104,18 @@ public class MergeTask implements Task {
             chunkService.create().create(getShortData(nameService.getChunkID("SID" + partnerIndex/2, 100),chunkService), tmpAddressChunkId, 1, GLOBAL_CHUNK_SIZE);
             editChunkInt(finalArray.length, tmpAddressChunkId[0], chunkService);
             nameService.register(tmpAddressChunkId[0], "SAC" + partnerIndex/2);
+
+            String filename = "dxapp/data/sortedDataFULLMerge"+ownSlaveID+numberOfWorkingNodes+".csv";
+            BufferedWriter outputWriter = new BufferedWriter(new FileWriter(filename));
+
+            for (long chunkAddress1 : finalArray) {
+                outputWriter.write(getIntData(chunkAddress1) + ", ");
+            }
+
+            outputWriter.flush();
+            outputWriter.close();
         }
 
-        String filename = "dxapp/data/sortedDataFULLMerge"+ownSlaveID+numberOfWorkingNodes+".csv";
-        BufferedWriter outputWriter = new BufferedWriter(new FileWriter(filename));
-
-        for (long chunkAddress1 : finalArray) {
-            outputWriter.write(getIntData(chunkAddress1) + ", ");
-        }
-
-        outputWriter.flush();
-        outputWriter.close();
 
         return 0;
     }
