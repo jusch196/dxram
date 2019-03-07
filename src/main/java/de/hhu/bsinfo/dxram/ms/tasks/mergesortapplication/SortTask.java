@@ -108,7 +108,7 @@ public class SortTask implements Task {
         // Update Chunkaddresses
         editChunkLongArray(chunkAddress, nameService.getChunkID("AC" + ownSlaveID, 100), chunkService);
 
-        String filename = "dxapp/data/"+System.nanoTime() + "sortedDataFULL"+ownSlaveID+".csv";
+        String filename = "dxapp/data/sortedDataFULL"+ownSlaveID+".csv";
         BufferedWriter outputWriter = new BufferedWriter(new FileWriter(filename));
 
         for (long chunkAddress1 : chunkAddress) {
