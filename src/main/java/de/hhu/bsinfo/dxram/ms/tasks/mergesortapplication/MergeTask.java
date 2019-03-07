@@ -53,9 +53,9 @@ public class MergeTask implements Task {
             int first=0, second=0;
             boolean run = false;
 
-            int[] array = new int[firstChunkAdresses.length];
-            for (int i=0;i<firstChunkAdresses.length;i++){
-                array[i] = getIntData(firstChunkAdresses[i]);
+            int[] array = new int[secondChunkAdresses.length];
+            for (int i=0;i<secondChunkAdresses.length;i++){
+                array[i] = getIntData(secondChunkAdresses[i]);
             }
             System.out.println(Arrays.toString(array));
 
