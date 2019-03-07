@@ -45,15 +45,15 @@ class SortAlgorithm extends Thread {
                 long[] finalArray = new long[length];
 
                 int indexLeft = 0;
-                int indexRight = 0;
+                int indexRight = breakpoint;
                 int finalIndex = 0;
 
                 int first=0, second=0;
                 boolean run = false;
 
-                if (indexLeft < breakpoint && indexRight < length-breakpoint){
+                if (indexLeft < breakpoint && indexRight < length){
                         first = getIntData(array[start+indexLeft]);
-                        second = getIntData(array[start + breakpoint + indexRight]);
+                        second = getIntData(array[start + indexRight]);
                         run = true;
                 }
 
@@ -66,10 +66,10 @@ class SortAlgorithm extends Thread {
                                 else
                                         run = false;
                         } else {
-                                finalArray[finalIndex] = array[start + breakpoint + indexRight];
+                                finalArray[finalIndex] = array[start + indexRight];
                                 indexRight++;
-                                if (indexRight < length-breakpoint)
-                                        second = getIntData(array[start + breakpoint + indexRight]);
+                                if (indexRight < length)
+                                        second = getIntData(array[start + indexRight]);
                                 else
                                         run = false;
                         }
@@ -82,8 +82,8 @@ class SortAlgorithm extends Thread {
                         finalIndex++;
                 }
 
-                while (indexRight < length-breakpoint) {
-                        finalArray[finalIndex] = array[start +breakpoint + indexRight];
+                while (indexRight < length) {
+                        finalArray[finalIndex] = array[start + indexRight];
                         indexRight++;
                         finalIndex++;
                 }
