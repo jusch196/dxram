@@ -48,14 +48,30 @@ class SortAlgorithm extends Thread {
                 int indexRight = 0;
                 int finalIndex = 0;
 
-                while (indexLeft < breakpoint && indexRight < length-breakpoint) {
+                int first=0, second=0;
+                boolean run = false;
 
-                        if (getIntData(array[start+indexLeft], chunkService) < getIntData(array[start + breakpoint + indexRight], chunkService)) {
+                if (indexLeft < breakpoint && indexRight < length-breakpoint){
+                        first = getIntData(array[start+indexLeft]);
+                        second = getIntData(array[start + breakpoint + indexRight]);
+                        run = true;
+                }
+
+                while (run) {
+                        if (first < second) {
                                 finalArray[finalIndex] = array[start + indexLeft];
                                 indexLeft++;
+                                if (indexLeft < breakpoint)
+                                        first = getIntData(array[start+indexLeft]);
+                                else
+                                        run = false;
                         } else {
                                 finalArray[finalIndex] = array[start + breakpoint + indexRight];
                                 indexRight++;
+                                if (indexRight < length-breakpoint)
+                                        second = getIntData(array[start + breakpoint + indexRight]);
+                                else
+                                        run = false;
                         }
                         finalIndex++;
                 }
@@ -96,12 +112,10 @@ class SortAlgorithm extends Thread {
          * Get the integervalue of a chunk
          * @param chunkId
          *          ID of the chunk
-         * @param chunkService
-         *          Chunkservice to manage the operation
          * @return
          *      Integervalue of the chunk
          */
-        private static int getIntData(long chunkId, ChunkService chunkService){
+        private static int getIntData(long chunkId){
                 ChunkByteArray chunk = new ChunkByteArray(chunkId, GLOBAL_CHUNK_SIZE);
                 chunkService.get().get(chunk);
                 byte[] byteData = chunk.getData();
