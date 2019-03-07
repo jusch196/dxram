@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.LongBuffer;
-import java.util.Arrays;
 
 /**
  * Task to Sort data localy (sortedData.csv)
@@ -109,17 +108,15 @@ public class SortTask implements Task {
         // Update Chunkaddresses
         editChunkLongArray(chunkAddress, nameService.getChunkID("AC" + ownSlaveID, 100), chunkService);
 
-        String filename = System.nanoTime() + "dxapp/data/sortedDataFULL"+ownSlaveID+".csv";
+        String filename = "dxapp/data/"+System.nanoTime() + "sortedDataFULL"+ownSlaveID+".csv";
         BufferedWriter outputWriter = new BufferedWriter(new FileWriter(filename));
 
-        int[] array = new int[chunkAddress.length];
         for (long chunkAddress1 : chunkAddress) {
             outputWriter.write(getIntData(chunkAddress1) + ", ");
         }
 
         outputWriter.flush();
         outputWriter.close();
-        System.out.println(Arrays.toString(array));
         return 0;
     }
 
