@@ -9,6 +9,9 @@ import de.hhu.bsinfo.dxram.nameservice.NameserviceService;
 import de.hhu.bsinfo.dxutils.serialization.Exporter;
 import de.hhu.bsinfo.dxutils.serialization.Importer;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.LongBuffer;
@@ -27,7 +30,7 @@ public class MergeTask implements Task {
     }
 
     @Override
-    public int execute(TaskContext p_ctx) {
+    public int execute(TaskContext p_ctx) throws IOException {
         // Get Services
         NameserviceService nameService = p_ctx.getDXRAMServiceAccessor().getService(NameserviceService.class);
         chunkService = p_ctx.getDXRAMServiceAccessor().getService(ChunkService.class);
@@ -102,6 +105,16 @@ public class MergeTask implements Task {
             editChunkInt(finalArray.length, tmpAddressChunkId[0], chunkService);
             nameService.register(tmpAddressChunkId[0], "SAC" + partnerIndex/2);
         }
+
+        String filename = "dxapp/data/sortedDataFULLMerge"+ownSlaveID+numberOfWorkingNodes+".csv";
+        BufferedWriter outputWriter = new BufferedWriter(new FileWriter(filename));
+
+        for (long chunkAddress1 : finalArray) {
+            outputWriter.write(getIntData(chunkAddress1) + ", ");
+        }
+
+        outputWriter.flush();
+        outputWriter.close();
 
         return 0;
     }
