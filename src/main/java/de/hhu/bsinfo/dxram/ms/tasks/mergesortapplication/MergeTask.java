@@ -33,18 +33,16 @@ public class MergeTask implements Task {
         chunkService = p_ctx.getDXRAMServiceAccessor().getService(ChunkService.class);
 
         short ownSlaveID = p_ctx.getCtxData().getSlaveId();
-        int ownIndex = Short.toUnsignedInt(ownSlaveID);
-        //int goThrough = getIntData(nameService.getChunkID("GT", 100));
         int numberOfWorkingNodes = getIntData(nameService.getChunkID("WN", 100));
 
-        if (ownIndex < numberOfWorkingNodes && ownIndex %2 == 1){
-            int partnerIndex = ownIndex - 1;
+        if (ownSlaveID < numberOfWorkingNodes && ownSlaveID %2 == 1){
+            int partnerIndex = ownSlaveID - 1;
 
             int sizeone = getIntData(nameService.getChunkID("SAC" + partnerIndex, 100));
-            int sizetwo = getIntData(nameService.getChunkID("SAC" + ownIndex, 100));
+            int sizetwo = getIntData(nameService.getChunkID("SAC" + ownSlaveID, 100));
 
             long[] firstChunkAdresses = getLongArray(nameService.getChunkID("AC" + partnerIndex, 100), sizeone);
-            long[] secondChunkAdresses = getLongArray(nameService.getChunkID("AC" + ownIndex, 100), sizetwo);
+            long[] secondChunkAdresses = getLongArray(nameService.getChunkID("AC" + ownSlaveID, 100), sizetwo);
 
             long[] finalArray = new long[sizeone+sizetwo];
             int indexLeft = 0;

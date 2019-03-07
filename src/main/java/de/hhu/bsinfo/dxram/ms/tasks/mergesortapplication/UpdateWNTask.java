@@ -20,12 +20,12 @@ import java.nio.LongBuffer;
  * @author Julian Schacht, julian-morten.schacht@uni-duesseldorf.de, 15.03.2019
  */
 
-public class UpdateGTTask implements Task {
+public class UpdateWNTask implements Task {
 
     private final static int GLOBAL_CHUNK_SIZE = 64;
     private static ChunkService chunkService;
 
-    public UpdateGTTask() {
+    public UpdateWNTask() {
     }
 
 
@@ -35,7 +35,6 @@ public class UpdateGTTask implements Task {
         chunkService = p_ctx.getDXRAMServiceAccessor().getService(ChunkService.class);
 
         short ownSlaveID = p_ctx.getCtxData().getSlaveId();
-        //int goThrough = getIntData(nameService.getChunkID("GT", 100));
         int numberOfWorkingNodes = getIntData(nameService.getChunkID("WN", 100));
 
         if (numberOfWorkingNodes %2 == 1 && (ownSlaveID == numberOfWorkingNodes-1)){
@@ -45,7 +44,6 @@ public class UpdateGTTask implements Task {
 
         }
         else if (numberOfWorkingNodes %2 == 0 && (ownSlaveID == numberOfWorkingNodes-1)){
-            //editChunkInt(goThrough*2, nameService.getChunkID("GT", 100), chunkService);
             editChunkInt( numberOfWorkingNodes/2, nameService.getChunkID("WN", 100), chunkService);
         }
         return 0;
