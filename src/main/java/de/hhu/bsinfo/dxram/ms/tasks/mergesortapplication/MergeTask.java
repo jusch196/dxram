@@ -34,7 +34,7 @@ public class MergeTask implements Task {
 
         short ownSlaveID = p_ctx.getCtxData().getSlaveId();
         int ownIndex = Short.toUnsignedInt(ownSlaveID);
-        int goThrough = getIntData(nameService.getChunkID("GT", 100));
+        //int goThrough = getIntData(nameService.getChunkID("GT", 100));
         int numberOfWorkingNodes = getIntData(nameService.getChunkID("WN", 100));
 
         if (ownIndex < numberOfWorkingNodes && ownIndex %2 == 1){
@@ -44,7 +44,7 @@ public class MergeTask implements Task {
             int sizetwo = getIntData(nameService.getChunkID("SAC" + ownIndex, 100));
 
 
-            System.out.println("Gothrough: " + goThrough);
+            //System.out.println("Gothrough: " + goThrough);
             System.out.println("OwnIndex: " + ownIndex);
             System.out.println("Größe erste Liste: " + sizeone);
             System.out.println("Größe zweite Liste: " + sizetwo);
