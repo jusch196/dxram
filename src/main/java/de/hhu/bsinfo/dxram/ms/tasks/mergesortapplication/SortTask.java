@@ -12,7 +12,6 @@ import de.hhu.bsinfo.dxutils.serialization.Importer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.LongBuffer;
-import java.util.Arrays;
 
 /**
  * Task to Sort data localy (sortedData.csv)
@@ -40,11 +39,10 @@ public class SortTask implements Task {
         NameserviceService nameService = p_ctx.getDXRAMServiceAccessor().getService(NameserviceService.class);
 
         short ownSlaveID = p_ctx.getCtxData().getSlaveId();
-        int ownIndex = Short.toUnsignedInt(ownSlaveID);
 
         // Get SortTaskBeginChunk
-        int size = getIntData(nameService.getChunkID("SAC" + ownIndex, 1000));
-        chunkAddress = getLongArray(nameService.getChunkID("AC" + ownIndex, 1000), size);
+        int size = getIntData(nameService.getChunkID("SAC" + ownSlaveID, 1000));
+        chunkAddress = getLongArray(nameService.getChunkID("AC" + ownSlaveID, 1000), size);
 
         int availableResources = Runtime.getRuntime().availableProcessors();
 
@@ -105,14 +103,7 @@ public class SortTask implements Task {
         }
 
         // Update Chunkaddresses
-        editChunkLongArray(chunkAddress, nameService.getChunkID("AC" + ownIndex, 1000), chunkService);
-
-        int[] array = new int[chunkAddress.length];
-        for (int i=0;i<chunkAddress.length;i++){
-            array[i] = getIntData(chunkAddress[i]);
-        }
-        System.out.println(Arrays.toString(array));
-
+        editChunkLongArray(chunkAddress, nameService.getChunkID("AC" + ownSlaveID, 100), chunkService);
 
         return 0;
     }
