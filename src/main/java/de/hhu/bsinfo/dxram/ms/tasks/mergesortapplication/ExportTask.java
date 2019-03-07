@@ -48,42 +48,31 @@ public class ExportTask implements Task {
 
             int dataSize = chunkAddress.length;
 
-            if (outputSplit > 1){
+            if (outputSplit > 1) {
 
                 int writeOutIndex;
-                for (int i=0; i<outputSplit-1;i++){
-                    String filename = "dxapp/data/sortedData"+i+".csv";
+                for (int i = 0; i < outputSplit - 1; i++) {
+                    String filename = "dxapp/data/sortedData" + i + ".csv";
                     BufferedWriter outputWriter = new BufferedWriter(new FileWriter(filename));
-                    writeOutIndex = i*dataSize/outputSplit;
+                    writeOutIndex = i * dataSize / outputSplit;
 
-                    for (int j=0; j<dataSize/outputSplit; j++){
-                     outputWriter.write(getIntData(chunkAddress[writeOutIndex+j]) + ", ");
+                    for (int j = 0; j < dataSize / outputSplit; j++) {
+                        outputWriter.write(getIntData(chunkAddress[writeOutIndex + j]) + ", ");
                     }
                     outputWriter.flush();
                     outputWriter.close();
                 }
+            }
 
                 int name = outputSplit-1;
                 String filename = "dxapp/data/sortedData"+name+".csv";
                 BufferedWriter outputWriter = new BufferedWriter(new FileWriter(filename));
 
-                writeOutIndex = (outputSplit-1)*dataSize/outputSplit;
-                for (int i=writeOutIndex; i<dataSize;i++){
+                for (int i=(outputSplit-1)*dataSize/outputSplit; i<dataSize;i++){
                     outputWriter.write(getIntData(chunkAddress[i]) + ", ");
                 }
                 outputWriter.flush();
                 outputWriter.close();
-        }
-            else if (outputSplit == 1){
-                String filename = "dxapp/data/sortedData.csv";
-                BufferedWriter outputWriter = new BufferedWriter(new FileWriter(filename));
-
-                for (long chunkAddress1 : chunkAddress) {
-                    outputWriter.write(getIntData(chunkAddress1) + ", ");
-                }
-                outputWriter.flush();
-                outputWriter.close();
-            }
         }
         return 0;
     }
