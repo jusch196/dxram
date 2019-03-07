@@ -9,8 +9,6 @@ import de.hhu.bsinfo.dxram.nameservice.NameserviceService;
 import de.hhu.bsinfo.dxutils.serialization.Exporter;
 import de.hhu.bsinfo.dxutils.serialization.Importer;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -108,15 +106,6 @@ public class SortTask implements Task {
         // Update Chunkaddresses
         editChunkLongArray(chunkAddress, nameService.getChunkID("AC" + ownSlaveID, 100), chunkService);
 
-        String filename = "dxapp/data/sortedDataFULL"+ownSlaveID+".csv";
-        BufferedWriter outputWriter = new BufferedWriter(new FileWriter(filename));
-
-        for (long chunkAddress1 : chunkAddress) {
-            outputWriter.write(getIntData(chunkAddress1) + ", ");
-        }
-
-        outputWriter.flush();
-        outputWriter.close();
         return 0;
     }
 

@@ -52,6 +52,26 @@ public class MergeTask implements Task {
             int indexRight = 0;
             int finalIndex = 0;
 
+            String filename = "dxapp/data/sortedDataFULLf"+ownSlaveID+".csv";
+            BufferedWriter outputWriter = new BufferedWriter(new FileWriter(filename));
+
+            for (long chunkAddress1 : firstChunkAdresses) {
+                outputWriter.write(getIntData(chunkAddress1) + ", ");
+            }
+
+            outputWriter.flush();
+            outputWriter.close();
+
+             filename = "dxapp/data/sortedDataFULLs"+ownSlaveID+".csv";
+             outputWriter = new BufferedWriter(new FileWriter(filename));
+
+            for (long chunkAddress1 : secondChunkAdresses) {
+                outputWriter.write(getIntData(chunkAddress1) + ", ");
+            }
+
+            outputWriter.flush();
+            outputWriter.close();
+
 
 
 
@@ -90,8 +110,8 @@ public class MergeTask implements Task {
             editChunkInt(finalArray.length, tmpAddressChunkId[0], chunkService);
             nameService.register(tmpAddressChunkId[0], "SAC" + partnerIndex/2);
 
-            String filename = "dxapp/data/sortedDataFULLMerge"+ownSlaveID+numberOfWorkingNodes+".csv";
-            BufferedWriter outputWriter = new BufferedWriter(new FileWriter(filename));
+             filename = "dxapp/data/sortedDataFULLMerge"+ownSlaveID+numberOfWorkingNodes+".csv";
+             outputWriter = new BufferedWriter(new FileWriter(filename));
 
             for (long chunkAddress1 : finalArray) {
                 outputWriter.write(getIntData(chunkAddress1) + ", ");
