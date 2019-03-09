@@ -73,6 +73,7 @@ class MergeAlgorithm extends Thread {
         ChunkByteArray chunk = new ChunkByteArray(chunkId, size);
         chunkService.get().get(chunk);
         byte[] byteData = chunk.getData();
+
         return ByteBuffer.wrap(byteData).getInt();
     }
 }

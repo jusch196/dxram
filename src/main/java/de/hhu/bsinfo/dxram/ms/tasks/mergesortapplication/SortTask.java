@@ -69,12 +69,12 @@ public class SortTask implements Task {
             if (splitCheck %1 != 0){
                 powTwo = false;
             }
+
             availableResources /= 2;
             threads = new Thread[availableResources];
 
-            for (int i = 0; i < availableResources; i++) {
+            for (int i = 0; i < availableResources; i++)
                 merge(i);
-            }
 
             // Update listlength
             int[] tmp;
@@ -87,12 +87,13 @@ public class SortTask implements Task {
                         tmp[i] += partialListLength[2 * i + 1];
                     }
                 }
+
                 tmp[tmp.length-1] = partialListLength[partialListLength.length-1];
                 powTwo = true;
                 availableResources++;
-
             } else{
                 tmp = new int[availableResources];
+
                 for (int i = 0; i < tmp.length; i++) {
                     tmp[i] = partialListLength[2 * i];
                     if (2 * i + 1 < partialListLength.length) {
@@ -182,6 +183,7 @@ public class SortTask implements Task {
         ChunkByteArray chunk = new ChunkByteArray(chunkId, GLOBAL_CHUNK_SIZE);
         chunkService.get().get(chunk);
         byte[] byteData = chunk.getData();
+
         return ByteBuffer.wrap(byteData).getInt();
     }
 
@@ -197,6 +199,7 @@ public class SortTask implements Task {
         for (int i=0; i<2*blockIndex;i++){
             start += partialListLength[i];
         }
+
         breakpoint = start + partialListLength[2*blockIndex];
         end = breakpoint + partialListLength[2*blockIndex+1] -1;
 

@@ -41,11 +41,10 @@ public class UpdateWNTask implements Task {
             nameService.register(nameService.getChunkID("AC" + ownSlaveID,100), "AC" +  ownSlaveID/2);
             nameService.register(nameService.getChunkID("SAC" + ownSlaveID,100), "SAC" + ownSlaveID/2);
             editChunkInt((int) Math.ceil((double) numberOfWorkingNodes/2), nameService.getChunkID("WN", 100), chunkService);
-
-        }
-        else if (numberOfWorkingNodes %2 == 0 && (ownSlaveID == numberOfWorkingNodes-1)){
+        } else if (numberOfWorkingNodes %2 == 0 && (ownSlaveID == numberOfWorkingNodes-1)){
             editChunkInt( numberOfWorkingNodes/2, nameService.getChunkID("WN", 100), chunkService);
         }
+
         return 0;
     }
 
@@ -80,6 +79,7 @@ public class UpdateWNTask implements Task {
         ChunkByteArray chunk = new ChunkByteArray(chunkId, GLOBAL_CHUNK_SIZE);
         chunkService.get().get(chunk);
         byte[] byteData = chunk.getData();
+
         return ByteBuffer.wrap(byteData).getInt();
     }
 
@@ -113,6 +113,7 @@ public class UpdateWNTask implements Task {
         ChunkByteArray chunk = new ChunkByteArray(chunkId, GLOBAL_CHUNK_SIZE);
         chunkService.get().get(chunk);
         byte[] byteData = chunk.getData();
+
         return ByteBuffer.wrap(byteData).getShort();
     }
 

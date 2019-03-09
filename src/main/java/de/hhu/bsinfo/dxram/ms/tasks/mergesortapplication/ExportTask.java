@@ -59,6 +59,7 @@ public class ExportTask implements Task {
                     for (int j = 0; j < dataSize / outputSplit; j++) {
                         outputWriter.write(getIntData(chunkAddress[writeOutIndex + j]) + ", ");
                     }
+
                     outputWriter.flush();
                     outputWriter.close();
                 }
@@ -71,6 +72,7 @@ public class ExportTask implements Task {
                 for (int i=(outputSplit-1)*dataSize/outputSplit; i<dataSize;i++){
                     outputWriter.write(getIntData(chunkAddress[i]) + ", ");
                 }
+
                 outputWriter.flush();
                 outputWriter.close();
         }
@@ -119,7 +121,6 @@ public class ExportTask implements Task {
         longBuffer.get(longArray);
 
         return longArray;
-
     }
 
     /**
@@ -133,6 +134,7 @@ public class ExportTask implements Task {
         ChunkByteArray chunk = new ChunkByteArray(chunkId, GLOBAL_CHUNK_SIZE);
         chunkService.get().get(chunk);
         byte[] byteData = chunk.getData();
+
         return ByteBuffer.wrap(byteData).getInt();
     }
 

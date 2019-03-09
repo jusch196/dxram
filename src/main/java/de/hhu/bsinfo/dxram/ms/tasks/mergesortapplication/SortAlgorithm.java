@@ -25,6 +25,7 @@ class SortAlgorithm extends Thread {
                 } catch (InterruptedException e) {
                         e.printStackTrace();
                 }
+
                 sort(start, length);
 
         }
@@ -65,6 +66,7 @@ class SortAlgorithm extends Thread {
                                 finalArray[finalIndex] = array[start + breakpoint + indexRight];
                                 indexRight++;
                         }
+
                         finalIndex++;
                 }
 
@@ -96,6 +98,7 @@ class SortAlgorithm extends Thread {
                 if ( endIndex > 1) {
                         sort(start, (endIndex/2));
                         sort(start+(endIndex/2), (endIndex-(endIndex/2)));
+
                         merge(start, endIndex, endIndex/2);
                 }
         }
@@ -111,6 +114,7 @@ class SortAlgorithm extends Thread {
                 ChunkByteArray chunk = new ChunkByteArray(chunkId, GLOBAL_CHUNK_SIZE);
                 chunkService.get().get(chunk);
                 byte[] byteData = chunk.getData();
+
                 return ByteBuffer.wrap(byteData).getInt();
         }
 }

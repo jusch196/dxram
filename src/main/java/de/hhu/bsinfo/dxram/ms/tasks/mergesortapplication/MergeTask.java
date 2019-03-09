@@ -55,22 +55,21 @@ public class MergeTask implements Task {
                 right[i] = getIntData(secondChunkAdresses[i]);
 
 
-            long[] finalArray = new long[sizeone+sizetwo];
             int indexLeft = 0;
             int indexRight = 0;
             int finalIndex = 0;
+            long[] finalArray = new long[sizeone+sizetwo];
 
             
             while (indexLeft < sizeone && indexRight < sizetwo) {
                 if (left[indexLeft] < right[indexRight]) {
                     finalArray[finalIndex] = firstChunkAdresses[indexLeft];
                     indexLeft++;
-
                 } else {
                     finalArray[finalIndex] = secondChunkAdresses[indexRight];
                     indexRight++;
-
                 }
+
                 finalIndex++;
             }
 
@@ -85,6 +84,7 @@ public class MergeTask implements Task {
                 indexRight++;
                 finalIndex++;
             }
+
             // Update Addresses
             long[] tmpAddressChunkId = new long[1];
             chunkService.create().create(getShortData(nameService.getChunkID("SID" + partnerIndex/2, 100),chunkService), tmpAddressChunkId, 1, GLOBAL_CHUNK_SIZE*finalArray.length);
@@ -157,6 +157,7 @@ public class MergeTask implements Task {
         ChunkByteArray chunk = new ChunkByteArray(chunkId, GLOBAL_CHUNK_SIZE);
         chunkService.get().get(chunk);
         byte[] byteData = chunk.getData();
+
         return ByteBuffer.wrap(byteData).getInt();
     }
 
@@ -208,6 +209,7 @@ public class MergeTask implements Task {
         ChunkByteArray chunk = new ChunkByteArray(chunkId, GLOBAL_CHUNK_SIZE);
         chunkService.get().get(chunk);
         byte[] byteData = chunk.getData();
+
         return ByteBuffer.wrap(byteData).getShort();
     }
 }
