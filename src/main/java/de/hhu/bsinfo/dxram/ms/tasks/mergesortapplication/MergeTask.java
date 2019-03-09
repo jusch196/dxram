@@ -29,6 +29,7 @@ public class MergeTask implements Task {
 
     @Override
     public int execute(TaskContext p_ctx) throws IOException {
+
         // Get Services
         NameserviceService nameService = p_ctx.getDXRAMServiceAccessor().getService(NameserviceService.class);
         chunkService = p_ctx.getDXRAMServiceAccessor().getService(ChunkService.class);

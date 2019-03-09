@@ -111,8 +111,27 @@ as a DXApp (see next sections).
 
 ## Tasks for DXRAM's MasterSlaveService
 
-TODO
+Tasks are standardly located in the package _de.hhu.bsinfo.dxram.ms.tasks_ and implement the _task_-interface.
+Using the the given argument
+> TaskContext p_ctx  
 
+you could access different functions like
+* _getCtxData()_ to get information about the node and the masterslavecontext 
+like a list of all slaveIdDs, your own slaveID, your assigned computegroupID
+ of the node or a list of all slaveIDs within the same computegroup.
+ 
+ * _getDXRAMServiceAccessor()_ to get an instance of a service or check if it is available.
+ 
+ * _getSignalInterface()_ to communicate with the masternode using signals.  
+ 
+ They've also got the ability to handle signals in a separated function.
+ To create a new Task and start it in your code your need to create a 
+ new instance of your task, put into a taskscript and submit it with
+ masterslaveService declaring a minimum and a maximum number of peers 
+ to execute i.e.
+ > DummyTask dummyTask = new DummyTask();
+   TaskScript taskScript = new TaskScript(1, 2, "DummyTask", dummyTask);
+   masterSlaveComputeService.submitTaskScript(taskScript);
 ## Jobs for DXRAM's JobService
 
 TODO
