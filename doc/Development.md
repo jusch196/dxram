@@ -113,8 +113,9 @@ as a DXApp (see next sections).
 
 Tasks are standardly located in the package _de.hhu.bsinfo.dxram.ms.tasks_ and implement the _task_-interface.
 Using the the given argument
-> TaskContext p_ctx  
-
+```
+TaskContext p_ctx  
+```
 you could access different functions like
 * _getCtxData()_ to get information about the node and the masterslavecontext 
 like a list of all slaveIdDs, your own slaveID, your assigned computegroupID
@@ -129,9 +130,11 @@ like a list of all slaveIdDs, your own slaveID, your assigned computegroupID
  new instance of your task, put into a taskscript and submit it with
  masterslaveService declaring a minimum and a maximum number of peers 
  to execute i.e.
- > DummyTask dummyTask = new DummyTask();
-   TaskScript taskScript = new TaskScript(1, 2, "DummyTask", dummyTask);
-   masterSlaveComputeService.submitTaskScript(taskScript);
+ ```
+ DummyTask dummyTask = new DummyTask();
+ TaskScript taskScript = new TaskScript(1, 2, "DummyTask", dummyTask);
+ masterSlaveComputeService.submitTaskScript(taskScript);
+```
 ## Jobs for DXRAM's JobService
 
 TODO
