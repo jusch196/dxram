@@ -50,6 +50,11 @@ public class ExportTask implements Task {
 
             if (outputSplit > 1) {
 
+                int array[] = new int[dataSize];
+
+                for (int i=0;i<dataSize;i++)
+                    array[i] = getIntData(chunkAddress[i]);
+
                 int writeOutIndex;
                 for (int i = 0; i < outputSplit - 1; i++) {
                     String filename = "dxapp/data/sortedData" + i + ".csv";
@@ -57,24 +62,23 @@ public class ExportTask implements Task {
                     writeOutIndex = i * dataSize / outputSplit;
 
                     for (int j = 0; j < dataSize / outputSplit; j++) {
-                        outputWriter.write(getIntData(chunkAddress[writeOutIndex + j]) + ", ");
+                        outputWriter.write(array[writeOutIndex + j] + ", ");
                     }
 
                     outputWriter.flush();
                     outputWriter.close();
                 }
-            }
 
                 int name = outputSplit-1;
                 String filename = "dxapp/data/sortedData"+name+".csv";
                 BufferedWriter outputWriter = new BufferedWriter(new FileWriter(filename));
 
-                for (int i=(outputSplit-1)*dataSize/outputSplit; i<dataSize;i++){
-                    outputWriter.write(getIntData(chunkAddress[i]) + ", ");
-                }
+                for (int i=(outputSplit-1)*dataSize/outputSplit; i<dataSize;i++)
+                    outputWriter.write(array[i] + ", ");
 
                 outputWriter.flush();
                 outputWriter.close();
+            }
         }
         return 0;
     }
