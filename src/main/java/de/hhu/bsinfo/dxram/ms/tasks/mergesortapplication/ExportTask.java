@@ -48,7 +48,7 @@ public class ExportTask implements Task {
 
             int dataSize = chunkAddress.length;
 
-            if (outputSplit > 1) {
+            if (outputSplit > 0) {
 
                 int array[] = new int[dataSize];
 
