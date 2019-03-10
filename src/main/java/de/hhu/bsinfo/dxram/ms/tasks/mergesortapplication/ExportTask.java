@@ -22,9 +22,9 @@ import java.nio.LongBuffer;
  * @author Julian Schacht, julian-morten.schacht@uni-duesseldorf.de, 15.03.2019
  */
 public class ExportTask implements Task {
+
     private final static int GLOBAL_CHUNK_SIZE = 64;
     private static ChunkService chunkService;
-
 
     public ExportTask(){
     }
@@ -137,6 +137,5 @@ public class ExportTask implements Task {
 
         return ByteBuffer.wrap(byteData).getInt();
     }
-
 
 }
