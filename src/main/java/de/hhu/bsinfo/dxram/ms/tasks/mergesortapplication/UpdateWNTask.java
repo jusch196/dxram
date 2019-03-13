@@ -40,10 +40,10 @@ public class UpdateWNTask implements Task {
             nameService.register(nameService.getChunkID("AC" + ownSlaveID,100), "AC" +  ownSlaveID/2);
             nameService.register(nameService.getChunkID("SAC" + ownSlaveID,100), "SAC" + ownSlaveID/2);
 
-            editChunkInt((int) Math.ceil((double) numberOfWorkingNodes/2), nameService.getChunkID("WN", 100), chunkService);
+            editChunkInt((int) Math.ceil((double) numberOfWorkingNodes/2), nameService.getChunkID("WN", 100));
         }
         else if (numberOfWorkingNodes %2 == 0 && (ownSlaveID == numberOfWorkingNodes-1))
-            editChunkInt( numberOfWorkingNodes/2, nameService.getChunkID("WN", 100), chunkService);
+            editChunkInt( numberOfWorkingNodes/2, nameService.getChunkID("WN", 100));
 
 
         return 0;
@@ -91,10 +91,8 @@ public class UpdateWNTask implements Task {
      *          Integervalue to put
      * @param chunkId
      *          ChunkID of the editable chunk
-     * @param chunkService
-     *          Chunkservice to manage the operation
      */
-    private void editChunkInt(int value, long chunkId , ChunkService chunkService){
+    private void editChunkInt(int value, long chunkId ){
         ByteBuffer byteBuffer = ByteBuffer.allocate(GLOBAL_CHUNK_SIZE);
         byteBuffer.putInt(value);
 

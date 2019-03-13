@@ -11,6 +11,9 @@ import java.nio.ByteBuffer;
  */
 class MergeAlgorithm extends Thread {
 
+    private final static int GLOBAL_CHUNK_SIZE = 64;
+    private static ChunkService chunkService;
+
     /**
      * Merges the addresses of two partial lists
      * stored next to each other comparing their values
@@ -27,6 +30,7 @@ class MergeAlgorithm extends Thread {
      */
     MergeAlgorithm(long[] array, int start, int end, int breakpoint, ChunkService chunkService){
 
+        MergeAlgorithm.chunkService = chunkService;
         long[] finalArray = new long[end-start+1];
 
         int indexLeft = start;
@@ -35,7 +39,7 @@ class MergeAlgorithm extends Thread {
 
         while (indexLeft < breakpoint && indexRight <= end) {
 
-            if (getIntData(array[indexLeft], 64, chunkService) < getIntData(array[indexRight], 64, chunkService)) {
+            if (getIntData(array[indexLeft]) < getIntData(array[indexRight])) {
                 finalArray[finalIndex] = array[indexLeft];
                 indexLeft++;
             } else {
@@ -64,13 +68,11 @@ class MergeAlgorithm extends Thread {
      * Get the integervalue of a chunk
      * @param chunkId
      *          ID of the chunk
-     * @param chunkService
-     *          Chunkservice to manage the operation
      * @return
      *      Integervalue of the chunk
      */
-    private static int getIntData(long chunkId, int size, ChunkService chunkService){
-        ChunkByteArray chunk = new ChunkByteArray(chunkId, size);
+    private static int getIntData(long chunkId){
+        ChunkByteArray chunk = new ChunkByteArray(chunkId, GLOBAL_CHUNK_SIZE);
         chunkService.get().get(chunk);
         byte[] byteData = chunk.getData();
 

@@ -88,13 +88,13 @@ public class MergeTask implements Task {
 
             // Update Addresses
             long[] tmpAddressChunkId = new long[1];
-            chunkService.create().create(getShortData(nameService.getChunkID("SID" + partnerIndex/2, 100),chunkService), tmpAddressChunkId, 1, GLOBAL_CHUNK_SIZE*finalArray.length);
-            editChunkLongArray(finalArray, tmpAddressChunkId[0], chunkService);
+            chunkService.create().create(getShortData(nameService.getChunkID("SID" + partnerIndex/2, 100)), tmpAddressChunkId, 1, GLOBAL_CHUNK_SIZE*finalArray.length);
+            editChunkLongArray(finalArray, tmpAddressChunkId[0]);
             nameService.register(tmpAddressChunkId[0], "AC" + partnerIndex/2);
 
             // Update Size
-            chunkService.create().create(getShortData(nameService.getChunkID("SID" + partnerIndex/2, 100),chunkService), tmpAddressChunkId, 1, GLOBAL_CHUNK_SIZE);
-            editChunkInt(finalArray.length, tmpAddressChunkId[0], chunkService);
+            chunkService.create().create(getShortData(nameService.getChunkID("SID" + partnerIndex/2, 100)), tmpAddressChunkId, 1, GLOBAL_CHUNK_SIZE);
+            editChunkInt(finalArray.length, tmpAddressChunkId[0]);
             nameService.register(tmpAddressChunkId[0], "SAC" + partnerIndex/2);
         }
 
@@ -166,10 +166,8 @@ public class MergeTask implements Task {
      *          longarray to put
      * @param chunkId
      *          ChunkID of the editable chunk
-     * @param chunkService
-     *          Chunkservice to manage the operation
      */
-    private void editChunkLongArray(long[] array, long chunkId, ChunkService chunkService){
+    private void editChunkLongArray(long[] array, long chunkId){
         ByteBuffer byteBuffer = ByteBuffer.allocate(array.length*GLOBAL_CHUNK_SIZE);
         LongBuffer longBuffer = byteBuffer.asLongBuffer();
         longBuffer.put(array);
@@ -185,10 +183,8 @@ public class MergeTask implements Task {
      *          Integervalue to put
      * @param chunkId
      *          ChunkID of the editable chunk
-     * @param chunkService
-     *          Chunkservice to manage the operation
      */
-    private void editChunkInt(int value, long chunkId , ChunkService chunkService){
+    private void editChunkInt(int value, long chunkId){
         ByteBuffer byteBuffer = ByteBuffer.allocate(GLOBAL_CHUNK_SIZE);
         byteBuffer.putInt(value);
 
@@ -200,12 +196,10 @@ public class MergeTask implements Task {
      * Get the shortvalue of a chunk
      * @param chunkId
      *          ID of the chunk
-     * @param chunkService
-     *          Chunkservice to manage the operation
      * @return
      *      Shortvalue of the chunk
      */
-    private short getShortData(long chunkId, ChunkService chunkService){
+    private short getShortData(long chunkId){
         ChunkByteArray chunk = new ChunkByteArray(chunkId, GLOBAL_CHUNK_SIZE);
         chunkService.get().get(chunk);
 
