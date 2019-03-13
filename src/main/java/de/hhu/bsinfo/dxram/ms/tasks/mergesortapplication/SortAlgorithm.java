@@ -27,7 +27,6 @@ class SortAlgorithm extends Thread {
                 }
 
                 sort(start, length);
-
         }
 
         /**
@@ -59,6 +58,7 @@ class SortAlgorithm extends Thread {
                     right[i] = getIntData(array[start+breakpoint+i]);
 
                 while (indexLeft < breakpoint && indexRight < length-breakpoint) {
+
                         if (left[indexLeft] < right[indexRight]) {
                                 finalArray[finalIndex] = array[start + indexLeft];
                                 indexLeft++;

@@ -11,7 +11,6 @@ import de.hhu.bsinfo.dxutils.serialization.Importer;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.LongBuffer;
 
 /**
  * Task to merge the presorted data (sortedData.csv) in case of uneven number
@@ -40,10 +39,12 @@ public class UpdateWNTask implements Task {
         if (numberOfWorkingNodes %2 == 1 && (ownSlaveID == numberOfWorkingNodes-1)){
             nameService.register(nameService.getChunkID("AC" + ownSlaveID,100), "AC" +  ownSlaveID/2);
             nameService.register(nameService.getChunkID("SAC" + ownSlaveID,100), "SAC" + ownSlaveID/2);
+
             editChunkInt((int) Math.ceil((double) numberOfWorkingNodes/2), nameService.getChunkID("WN", 100), chunkService);
-        } else if (numberOfWorkingNodes %2 == 0 && (ownSlaveID == numberOfWorkingNodes-1)){
-            editChunkInt( numberOfWorkingNodes/2, nameService.getChunkID("WN", 100), chunkService);
         }
+        else if (numberOfWorkingNodes %2 == 0 && (ownSlaveID == numberOfWorkingNodes-1))
+            editChunkInt( numberOfWorkingNodes/2, nameService.getChunkID("WN", 100), chunkService);
+
 
         return 0;
     }
@@ -96,41 +97,7 @@ public class UpdateWNTask implements Task {
     private void editChunkInt(int value, long chunkId , ChunkService chunkService){
         ByteBuffer byteBuffer = ByteBuffer.allocate(GLOBAL_CHUNK_SIZE);
         byteBuffer.putInt(value);
-        ChunkByteArray chunkByteArray = new ChunkByteArray(chunkId, byteBuffer.array());
-        chunkService.put().put(chunkByteArray);
-    }
 
-    /**
-     * Get the shortvalue of a chunk
-     * @param chunkId
-     *          ID of the chunk
-     * @param chunkService
-     *          Chunkservice to manage the operation
-     * @return
-     *      Shortvalue of the chunk
-     */
-    private short getShortData(long chunkId, ChunkService chunkService){
-        ChunkByteArray chunk = new ChunkByteArray(chunkId, GLOBAL_CHUNK_SIZE);
-        chunkService.get().get(chunk);
-        byte[] byteData = chunk.getData();
-
-        return ByteBuffer.wrap(byteData).getShort();
-    }
-
-    /**
-     * Edits the longarray of a chunk
-     *
-     * @param array
-     *          longarray to put
-     * @param chunkId
-     *          ChunkID of the editable chunk
-     * @param chunkService
-     *          Chunkservice to manage the operation
-     */
-    private void editChunkLongArray(long[] array, long chunkId, ChunkService chunkService){
-        ByteBuffer byteBuffer = ByteBuffer.allocate(array.length*GLOBAL_CHUNK_SIZE);
-        LongBuffer longBuffer = byteBuffer.asLongBuffer();
-        longBuffer.put(array);
         ChunkByteArray chunkByteArray = new ChunkByteArray(chunkId, byteBuffer.array());
         chunkService.put().put(chunkByteArray);
     }

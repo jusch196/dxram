@@ -136,15 +136,12 @@ public class MergeTask implements Task {
         ChunkByteArray testChunk = new ChunkByteArray(chunkId, GLOBAL_CHUNK_SIZE*size);
         chunkService.get().get(testChunk);
         byte[] byteData = testChunk.getData();
-        LongBuffer longBuffer = ByteBuffer.wrap(byteData)
-                .order(ByteOrder.BIG_ENDIAN)
-                .asLongBuffer();
+        LongBuffer longBuffer = ByteBuffer.wrap(byteData).order(ByteOrder.BIG_ENDIAN).asLongBuffer();
 
         long[] longArray = new long[size];
         longBuffer.get(longArray);
 
         return longArray;
-
     }
 
     /**
@@ -176,6 +173,7 @@ public class MergeTask implements Task {
         ByteBuffer byteBuffer = ByteBuffer.allocate(array.length*GLOBAL_CHUNK_SIZE);
         LongBuffer longBuffer = byteBuffer.asLongBuffer();
         longBuffer.put(array);
+
         ChunkByteArray chunkByteArray = new ChunkByteArray(chunkId, byteBuffer.array());
         chunkService.put().put(chunkByteArray);
     }
@@ -193,6 +191,7 @@ public class MergeTask implements Task {
     private void editChunkInt(int value, long chunkId , ChunkService chunkService){
         ByteBuffer byteBuffer = ByteBuffer.allocate(GLOBAL_CHUNK_SIZE);
         byteBuffer.putInt(value);
+
         ChunkByteArray chunkByteArray = new ChunkByteArray(chunkId, byteBuffer.array());
         chunkService.put().put(chunkByteArray);
     }
@@ -209,6 +208,7 @@ public class MergeTask implements Task {
     private short getShortData(long chunkId, ChunkService chunkService){
         ChunkByteArray chunk = new ChunkByteArray(chunkId, GLOBAL_CHUNK_SIZE);
         chunkService.get().get(chunk);
+
         byte[] byteData = chunk.getData();
 
         return ByteBuffer.wrap(byteData).getShort();

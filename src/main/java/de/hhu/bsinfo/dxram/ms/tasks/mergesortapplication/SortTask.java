@@ -44,11 +44,11 @@ public class SortTask implements Task {
         chunkAddress = getLongArray(nameService.getChunkID("AC" + ownSlaveID, 1000), size);
 
         int availableResources = Runtime.getRuntime().availableProcessors();
+        int lengthOfSplits = chunkAddress.length/availableResources;
+        int overhead = chunkAddress.length % availableResources;
 
         threads = new Thread[availableResources];
         partialListLength = new int[availableResources];
-        int lengthOfSplits = chunkAddress.length/availableResources;
-        int overhead = chunkAddress.length % availableResources;
 
         // Run John von Neumann mergesort on each partial list
         for (int i = 0, j = 0; i < availableResources; i++) {
@@ -64,6 +64,7 @@ public class SortTask implements Task {
 
         while (availableResources > 1){
             double splitCheck = (double) availableResources/2;
+
             if (splitCheck %1 != 0){
                 powTwo = false;
             }
@@ -81,6 +82,7 @@ public class SortTask implements Task {
 
                 for (int i = 0; i < tmp.length-1; i++) {
                     tmp[i] = partialListLength[2 * i];
+
                     if (2 * i + 1 < partialListLength.length) {
                         tmp[i] += partialListLength[2 * i + 1];
                     }
@@ -142,6 +144,7 @@ public class SortTask implements Task {
         ByteBuffer byteBuffer = ByteBuffer.allocate(array.length*GLOBAL_CHUNK_SIZE);
         LongBuffer longBuffer = byteBuffer.asLongBuffer();
         longBuffer.put(array);
+
         ChunkByteArray chunkByteArray = new ChunkByteArray(chunkId, byteBuffer.array());
         chunkService.put().put(chunkByteArray);
     }
@@ -159,9 +162,7 @@ public class SortTask implements Task {
         ChunkByteArray testChunk = new ChunkByteArray(chunkId, GLOBAL_CHUNK_SIZE*size);
         chunkService.get().get(testChunk);
         byte[] byteData = testChunk.getData();
-        LongBuffer longBuffer = ByteBuffer.wrap(byteData)
-                .order(ByteOrder.BIG_ENDIAN)
-                .asLongBuffer();
+        LongBuffer longBuffer = ByteBuffer.wrap(byteData).order(ByteOrder.BIG_ENDIAN).asLongBuffer();
 
         long[] longArray = new long[size];
         longBuffer.get(longArray);
